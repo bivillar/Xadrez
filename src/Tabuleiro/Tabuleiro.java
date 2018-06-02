@@ -4,6 +4,7 @@ import Pecas.*;
 
 public class Tabuleiro {
 	private static Casa _casa[][] = new Casa[8][8];
+	private static movimento _jogadas[][] = new movimento[64][64];
 	
 	public Tabuleiro () {
 		
@@ -57,17 +58,17 @@ public class Tabuleiro {
 		_casa[4][6].peca = (Peao) new Peao('b',new Posicao(4,6));
 		_casa[5][6].peca = (Peao) new Peao('b',new Posicao(5,6));
 		_casa[6][6].peca = (Peao) new Peao('b',new Posicao(6,6));
-		_casa[7][6].peca = (Peao) new Peao('b',new Posicao(7,6));
+		_casa[7][6].peca = (Peao) new Peao('b',new Posicao(7,6));	
 		
-		
-			
-		
+		update_Jogadas();
 	}
-	
-	
 	
 	public static Casa[][] get_Tabuleiro (){
 		return _casa;
+	}
+	
+	public static movimento[][] get_Jogadas (){
+		return _jogadas;
 	}
 	
 	public static void move_peca(Posicao pos, Posicao dest, Casa[][] tab) {
@@ -75,11 +76,90 @@ public class Tabuleiro {
 		tab[pos.x][pos.y].peca = null;
 		tab[dest.x][dest.y].peca.pos.x = dest.x;
 		tab[dest.x][dest.y].peca.pos.y = dest.y;
+		update_Jogadas();
 	}
 	
 	public static void remove_peca(Posicao pos, Casa[][] tab) {
 		tab[pos.x][pos.y].peca = null;
+		update_Jogadas();
 	}
+	
+	public static void update_Jogadas () {
+		int rx[] =new int[3],ry[]= new int[3],i=1;
+		rx[0]=4;
+		ry[0]=6;
+		System.out.println("Entrou em Update");
+		
+		for(int k = 0;k<64;k++)
+			for(int t=0;t<64;t++)
+				_jogadas[t][k]=movimento.invalido;
+		
+		for(int y = 0; y<8;y++) {
+			for(int x = 0; x<8;x++ ) {
+				if(!_casa[x][y].vazia()) {
+					if(_casa[x][y].peca.tipo != tPecas.rei)
+						_jogadas[x+8*y] = _casa[x][y].peca.mov_valido(_casa);
+				}
+			}
+		}
+		
+		for(int y = 0; y<8;y++) {
+			for(int x = 0; x<8;x++ ) {
+				if(!_casa[x][y].vazia()) {
+					if(_casa[x][y].peca.tipo == tPecas.rei) {
+						_jogadas[x+8*y] = _casa[x][y].peca.mov_valido(_casa);
+						rx[i] = x;
+						ry[i] = y;
+						System.out.println("x:" + x+" y:"+y);
+						i++;
+					}
+				}
+			}
+		}
+		
+//		for(int y=1; y<3;y++) {
+//			for (int x=0; x<64;x++) {
+//				switch(_jogadas[rx[y]+ry[y]*8][x]) {
+//					case invalido:
+//						System.out.print(" I ");
+//						break;
+//					case valido:
+//						System.out.print(" V ");
+//						break;
+//					case ataque:
+//						System.out.print(" A ");
+//						break;
+//					case bloqueado:
+//						System.out.print(" B ");
+//						break;
+//				}
+//			}
+//			System.out.println("");
+//		}
+//		System.out.println("--------------------");
+//		
+//			for (int x=0; x<64;x++) {
+//				switch(_jogadas[x][rx[0]+ry[0]*8]) {
+//					case invalido:
+//						System.out.print(" I \n");
+//						break;
+//					case valido:
+//						System.out.print(" V \n");
+//						break;
+//					case ataque_valido:
+//						System.out.print(" AV \n");
+//					case ataque:
+//						System.out.print(" A \n");
+//						break;
+//					case bloqueado:
+//						System.out.print(" B \n");
+//						break;
+//				}
+//			
+//		}
+		
+	}
+	
 	
 	public static void imprime () {
 		char aux=' ';

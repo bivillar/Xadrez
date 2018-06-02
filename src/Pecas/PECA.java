@@ -1,5 +1,6 @@
 package Pecas;
 
+import Tabuleiro.Casa;
 import java.awt.Image;
 import java.io.File;
 
@@ -17,8 +18,11 @@ public class PECA {
 		tipo = Tipo;
 	}
 
-	public boolean mov_valido(Posicao dest)  {
-		return true;
+	public movimento[] mov_valido(Casa casas[][])  {
+		movimento movs[] = new movimento[64];
+		for(int i=0;i<64;i++)
+			movs[i]=movimento.invalido;
+		return movs;
 	}
 	
 	public void setImage(String end) {

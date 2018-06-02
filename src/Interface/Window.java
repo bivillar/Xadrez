@@ -12,11 +12,11 @@ public class Window extends JFrame{
 	public DesenhoTabuleiro tab;
 	private DesenhoPecas p;
 	
-	public Window(Casa m[][]) {
+	public Window(Casa t[][]) {
 		
 		//p=new DesenhoPecas();
 		//p.inicializaImagens(m);
-		tab = new DesenhoTabuleiro(m);
+		tab = new DesenhoTabuleiro(t);
 
 
 		Toolkit tk=Toolkit.getDefaultToolkit();
@@ -30,5 +30,10 @@ public class Window extends JFrame{
 		setResizable(false);
 		setTitle("Xadrez");
 		getContentPane().add(tab);
+	}
+	
+	public static void redezenha (Casa t[][], Window J) {
+		DesenhoTabuleiro ta = new DesenhoTabuleiro(t);
+		J.add(ta);
 	}
 }
