@@ -5,12 +5,15 @@ import Tabuleiro.*;
 
 public class Main {
 	
+	static Window janelaJogo;
+	
 	public static void main(String[] args) {
 		Tabuleiro t = new Tabuleiro();
 		t.imprime();
-		Window J = new Window(t.get_Tabuleiro());
-		J.setVisible(true);
-		J.addMouseListener(new Controlador());
+		janelaJogo = new Window(t.get_Tabuleiro());
+		
+		janelaJogo.setVisible(true);
+		janelaJogo.addMouseListener(new Controlador());
 	}
 
 }

@@ -15,7 +15,7 @@ public class Controlador implements MouseListener{
 	private Casa _atacada = null;
 	private Posicao _pos = new Posicao (0,0);
 	private Posicao _dest  = new Posicao (0,0);
-	
+
 	
 	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que está dentro dela, se houver
 		//int x,y;
@@ -133,14 +133,15 @@ public class Controlador implements MouseListener{
 						System.out.println("Caminho Livre");
 						Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
 						//CHAMAR FUNCAO DA INTERFACE PRA REDESENHAR O TABULEIRO <--------------------------- LIV
+						Main.janelaJogo.tab.repaint();
 						Tabuleiro.imprime();
 						break;
 					case ataque:
 						System.out.println("ATAQUE!");
 						Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
-						
 						//CHAMAR FUNCAO DA INTERFACE PRA REDESENHAR O TABULEIRO <--------------------------- LIV
 						Tabuleiro.imprime();
+						Main.janelaJogo.tab.repaint();
 						break;
 					case bloqueado:
 						//MOSTRAR UM ALERT DIZENDO QUE A PECA TA BLOQUEADA <--------------------------- LIV
