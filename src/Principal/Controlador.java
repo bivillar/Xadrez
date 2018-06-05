@@ -31,7 +31,7 @@ public class Controlador implements MouseListener{
 		}
 	}
 	
-	/*retorna a peça q ta no caminho de outra ou null se nao tiver nenhuma*/
+	/*retorna a peca q ta no caminho de outra ou null se nao tiver nenhuma*/
 	public Casa caminho (Posicao pos, Posicao dest, Casa[][] tab) { 
 		
 		if(pos.x==dest.x) { //mesmo x
@@ -92,37 +92,6 @@ public class Controlador implements MouseListener{
 		return null;		
 	}
 	
-	public void verificaCaminhosLivres (Casa origem) {
-		int i,j;
-		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].cor='y';
-		for(i=0;i<8;i++) {
-			for(j=0;j<8;j++) {
-				
-				if(_jogadas[_pos.x+8*_pos.y][i+8*j] == movimento.valido ) {
-					_tabuleiro[i][j].cor='y';
-				}
-			}
-		}
-		Main.janelaJogo.tab.repaint();
-	}
-	
-	public void repaintTabuleiro() {
-		for (int y=0;y<8;y++) {
-			for(int x=0;x<8;x++) {
-				if(y%2 == 0) {
-					_tabuleiro[x][y].cor='b';
-					_tabuleiro[++x][y].cor='p';
-				}
-				else {
-					_tabuleiro[x][y].cor='p';
-					_tabuleiro[++x][y].cor='b';
-				}
-			}
-		}
-		Main.janelaJogo.tab.repaint();
-	}
-	
-	
 	@Override
 	public void mouseClicked(MouseEvent c) {
 		_tabuleiro = Tabuleiro.get_Tabuleiro();
@@ -142,9 +111,7 @@ public class Controlador implements MouseListener{
 			}else {
 				
 				System.out.println("Origem - tipo:" + _origem.peca.tipo + " time:" + _origem.peca.time);
-				
 				//MOSTRAR TODAS AS POSSIVEIS JOGADAS DESSA PEÇA <--------------------------- LIV
-				verificaCaminhosLivres(_origem);
 			}
 			
 		}
@@ -156,40 +123,50 @@ public class Controlador implements MouseListener{
 				// ALERT DE MOVIMENTO INVALIDO <--------------------------- LIV
 				System.out.println("Tente outra vez");
 				
-				
 			}else {
 				switch(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y]) {
 					case invalido:
-						System.out.println("Movimento Inválido");
+						System.out.println("Movimento Inv�lido");
 						//Tabuleiro.imprime();
 						break;
 					case valido:
 						System.out.println("Caminho Livre");
 						Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
 						Main.janelaJogo.tab.repaint();
-						//CHAMAR FUNCAO DA INTERFACE PRA REDESENHAR O TABULEIRO <--------------------------- LIV
 						//Tabuleiro.imprime();
+						
+						promoPeao(_destino);//PROMOCAO PEAO
 						break;
 					case ataque:
 						System.out.println("ATAQUE!");
 						Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
 						Main.janelaJogo.tab.repaint();
-						//CHAMAR FUNCAO DA INTERFACE PRA REDESENHAR O TABULEIRO <--------------------------- LIV
 						//Tabuleiro.imprime();
+						
+						promoPeao(_destino); //PROMOCAO PEAO
 						break;
 					case bloqueado:
 						//MOSTRAR UM ALERT DIZENDO QUE A PECA TA BLOQUEADA <--------------------------- LIV
-						System.out.println("Peça bloqueada");
+						System.out.println("Pe�a bloqueada");
 						//Tabuleiro.imprime();
 						break;
 				}
 			}
-			repaintTabuleiro();
+			
 			_origem = null;
 			_destino = null;
 		}
 	}
 
+	private void promoPeao (Casa c) {
+		if(c.peca.tipo != tPecas.peao || (c.peca.time == 'b' && c.peca.pos.y!=0) || (c.peca.time == 'p' && c.peca.pos.y!=7))
+			return;
+		
+		System.out.println("PROMOVE PEAO");
+		//TODO: POP ALERT PERGUNTANDO PRO QUE QUER PROMOVER;
+		//TODO: CONVERTER O TIPO DA PECA DA CASA PARA O TIPO QUE DESEJA PROMOVER;
+	}
+	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
