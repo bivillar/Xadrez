@@ -60,16 +60,25 @@ public class DesenhoTabuleiro extends JPanel{
 		for(int i=0;i<8;i++) {
 			for (int j=0;j<8;j++) {
 				Rectangle2D ret=new Rectangle2D.Double(tam*i,tam*j,tam,tam);
-				if (tabuleiro[i][j].cor =='b') {
-					g2d.setPaint(BEIGE);
+				if (tabuleiro[i][j].cor =='y'){
+					
+					g2d.setColor(Color.YELLOW);
+					g2d.fill(ret);
 				}
 				else {
-					g2d.setPaint(BROWN);
+					if (tabuleiro[i][j].cor =='b') {
+						g2d.setPaint(BEIGE);
 				}
-				g2d.fill(ret);
+					else {
+						g2d.setPaint(BROWN);
+					}	
+					g2d.fill(ret);
+				}
+				
 				//DESENHA PECA
 				
 				p=tabuleiro[i][j].peca;
+				
 				
 				if (p!= null) {
 					switch(p.time) {
