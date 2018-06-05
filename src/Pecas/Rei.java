@@ -6,15 +6,8 @@ public class Rei extends PECA{
 	public Rei (char time, Posicao pos) {
 		super(time,pos,tPecas.rei);
 	}
-	@Override
-//	public movimento[] mov_valido(Casa casas[][])  { 
-//		movimento movs[] = new movimento[64];
-//		
-//		for(int i=0;i<64;i++)
-//			movs[i]=movimento.invalido;
-//		return movs;
-//	}
 	
+	@Override	
 	public movimento[] mov_valido(Casa casas[][])  { 
 		movimento movs[] = new movimento[64];
 		movimento jogadas[][] = Tabuleiro.get_Jogadas();
@@ -43,10 +36,8 @@ public class Rei extends PECA{
 					for(int Y=0;Y<8;Y++) {
 						for(int X = 0;X<8;X++){
 							if((jogadas[X+8*Y][x+8*y] == movimento.valido && casas[X][Y].peca.tipo != tPecas.peao) || jogadas[X+8*Y][x+8*y] == movimento.ataque_valido) {
-								System.out.println("X:"+X+" Y:"+Y + "- time:" + time + "time_ataque:" + casas[X][Y].peca.time);
 								
 								if(casas[X][Y].peca.time!=time) {
-									System.out.println("Entrou aqui");
 									movs[x+8*y] = movimento.bloqueado;
 									break outerloop;
 								}
