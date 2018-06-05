@@ -10,12 +10,14 @@ public class PECA {
 	public char time;
 	public Posicao pos;
 	public tPecas tipo;
+	public int qtd_mov;
 	Image img;
 	
 	public PECA(char Time, Posicao Pos, tPecas Tipo) {
 		time = Time;
 		pos = Pos;
 		tipo = Tipo;
+		qtd_mov = 0;
 	}
 
 	public movimento[] mov_valido(Casa casas[][])  {
