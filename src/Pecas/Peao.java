@@ -39,7 +39,7 @@ public class Peao extends PECA{
 				movs[pos.x+8*y_vet] = movimento.bloqueado;
 			
 			
-			if(primeira_jogada()) {
+			if(qtd_mov == 0) {
 				y_vet = pos.y+2*fator;
 				
 				if(casas[pos.x][y_vet].vazia())
@@ -70,12 +70,6 @@ public class Peao extends PECA{
 		}
 		
 		return movs;
-	}
-	
-	private boolean primeira_jogada () {
-		if((time=='b' && pos.y == 6) || (time=='p' && pos.y == 1))
-			return true;
-		return false;
 	}
 	
 }

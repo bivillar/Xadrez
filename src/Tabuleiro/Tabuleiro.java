@@ -76,6 +76,7 @@ public class Tabuleiro {
 		tab[pos.x][pos.y].peca = null;
 		tab[dest.x][dest.y].peca.pos.x = dest.x;
 		tab[dest.x][dest.y].peca.pos.y = dest.y;
+		tab[dest.x][dest.y].peca.qtd_mov++;
 		update_Jogadas();
 	}
 	
