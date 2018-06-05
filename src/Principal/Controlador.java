@@ -17,7 +17,7 @@ public class Controlador implements MouseListener{
 	private Posicao _dest  = new Posicao (0,0);
 	
 	
-	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que estÃ¡ dentro dela, se houver
+	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que estao dentro dela, se houver
 		//int x,y;
 		
 		if(pos.x>560 || pos.y>582) {
