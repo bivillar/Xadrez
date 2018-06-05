@@ -21,9 +21,7 @@ public class Tabuleiro {
 			}
 		}
 		
-		_casa[0][0].peca = (Torre) new Torre('p',new Posicao(0,0));
-		//_casa[0][0].peca.setImage("Imagens/Pecas_1/torreB.png");
-		
+		_casa[0][0].peca = (Torre) new Torre('p',new Posicao(0,0));		
 		_casa[1][0].peca = (Cavalo) new Cavalo('p',new Posicao(1,0));
 		_casa[2][0].peca = (Bispo) new Bispo('p',new Posicao(2,0));
 		_casa[3][0].peca = (Rainha) new Rainha('p',new Posicao(3,0));
@@ -31,7 +29,6 @@ public class Tabuleiro {
 		_casa[5][0].peca = (Bispo) new Bispo('p',new Posicao(5,0));
 		_casa[6][0].peca = (Cavalo) new Cavalo('p',new Posicao(6,0));
 		_casa[7][0].peca = (Torre) new Torre('p',new Posicao(7,0));
-		//_casa[7][0].peca.setImage("Imagens/Pecas_1/torreB.png");
 		
 		_casa[0][1].peca = (Peao) new Peao('p',new Posicao(0,1));
 		_casa[1][1].peca = (Peao) new Peao('p',new Posicao(1,1));
@@ -85,12 +82,9 @@ public class Tabuleiro {
 		update_Jogadas();
 	}
 	
-	public static void update_Jogadas () {
-		int rx[] =new int[3],ry[]= new int[3],i=1;
-		rx[0]=4;
-		ry[0]=6;
-		System.out.println("Entrou em Update");
-		
+	public static void update_Jogadas () {	
+		Posicao [] pReis = {new Posicao(0,0), new Posicao(0,0)};
+		int i=0;
 		for(int k = 0;k<64;k++)
 			for(int t=0;t<64;t++)
 				_jogadas[t][k]=movimento.invalido;
@@ -100,64 +94,17 @@ public class Tabuleiro {
 				if(!_casa[x][y].vazia()) {
 					if(_casa[x][y].peca.tipo != tPecas.rei)
 						_jogadas[x+8*y] = _casa[x][y].peca.mov_valido(_casa);
-				}
-			}
-		}
-		
-		for(int y = 0; y<8;y++) {
-			for(int x = 0; x<8;x++ ) {
-				if(!_casa[x][y].vazia()) {
-					if(_casa[x][y].peca.tipo == tPecas.rei) {
-						_jogadas[x+8*y] = _casa[x][y].peca.mov_valido(_casa);
-						rx[i] = x;
-						ry[i] = y;
-						System.out.println("x:" + x+" y:"+y);
+					else { //guardo as posicoes dos reis pra nao ter que verificar todo o tabuleiro de novo
+						pReis[i].x = x;
+						pReis[i].y = y;
 						i++;
 					}
 				}
 			}
 		}
 		
-//		for(int y=1; y<3;y++) {
-//			for (int x=0; x<64;x++) {
-//				switch(_jogadas[rx[y]+ry[y]*8][x]) {
-//					case invalido:
-//						System.out.print(" I ");
-//						break;
-//					case valido:
-//						System.out.print(" V ");
-//						break;
-//					case ataque:
-//						System.out.print(" A ");
-//						break;
-//					case bloqueado:
-//						System.out.print(" B ");
-//						break;
-//				}
-//			}
-//			System.out.println("");
-//		}
-//		System.out.println("--------------------");
-//		
-//			for (int x=0; x<64;x++) {
-//				switch(_jogadas[x][rx[0]+ry[0]*8]) {
-//					case invalido:
-//						System.out.print(" I \n");
-//						break;
-//					case valido:
-//						System.out.print(" V \n");
-//						break;
-//					case ataque_valido:
-//						System.out.print(" AV \n");
-//					case ataque:
-//						System.out.print(" A \n");
-//						break;
-//					case bloqueado:
-//						System.out.print(" B \n");
-//						break;
-//				}
-//			
-//		}
+		for(i=0;i<2;i++) //so preencho os reis depois que sei todos os outros
+			_jogadas[pReis[i].x+8*pReis[i].y] = _casa[pReis[i].x][pReis[i].y].peca.mov_valido(_casa);
 		
 	}
 	
