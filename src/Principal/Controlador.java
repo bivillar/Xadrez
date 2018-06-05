@@ -17,7 +17,7 @@ public class Controlador implements MouseListener{
 	private Posicao _dest  = new Posicao (0,0);
 	
 	
-	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que está dentro dela, se houver
+	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que estÃ¡ dentro dela, se houver
 		//int x,y;
 		
 		if(pos.x>560 || pos.y>582) {
@@ -97,7 +97,7 @@ public class Controlador implements MouseListener{
 		_tabuleiro = Tabuleiro.get_Tabuleiro();
 		_jogadas = Tabuleiro.get_Jogadas();
 		
-		if(_origem == null) { // nao selecionaram quem vai atacar até agora
+		if(_origem == null) { // nao selecionaram quem vai atacar ate agora
 			_pos.set_Pos(c.getX(), c.getY());
 			_origem = get_casa(_pos,_tabuleiro);
 			
@@ -111,7 +111,7 @@ public class Controlador implements MouseListener{
 			}else {
 				
 				System.out.println("Origem - tipo:" + _origem.peca.tipo + " time:" + _origem.peca.time);
-				//MOSTRAR TODAS AS POSSIVEIS JOGADAS DESSA PEÇA <--------------------------- LIV
+				//MOSTRAR TODAS AS POSSIVEIS JOGADAS DESSA PECA <--------------------------- LIV
 			}
 			
 		}
@@ -126,7 +126,7 @@ public class Controlador implements MouseListener{
 			}else {
 				switch(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y]) {
 					case invalido:
-						System.out.println("Movimento Inv�lido");
+						System.out.println("Movimento Inválido");
 						//Tabuleiro.imprime();
 						break;
 					case valido:
@@ -147,7 +147,7 @@ public class Controlador implements MouseListener{
 						break;
 					case bloqueado:
 						//MOSTRAR UM ALERT DIZENDO QUE A PECA TA BLOQUEADA <--------------------------- LIV
-						System.out.println("Pe�a bloqueada");
+						System.out.println("Peça bloqueada");
 						//Tabuleiro.imprime();
 						break;
 				}
