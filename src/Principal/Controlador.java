@@ -92,6 +92,36 @@ public class Controlador implements MouseListener{
 		return null;		
 	}
 	
+	public void verificaCaminhosLivres (Casa origem) {
+		int i,j;
+		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].cor='g';
+		for(i=0;i<8;i++) {
+			for(j=0;j<8;j++) {
+				
+				if(_jogadas[_pos.x+8*_pos.y][i+8*j] == movimento.valido ) {
+					_tabuleiro[i][j].cor='y';
+				}
+			}
+		}
+		Main.janelaJogo.tab.repaint();
+	}
+	
+	public void repaintTabuleiro() {
+		for (int y=0;y<8;y++) {
+			for(int x=0;x<8;x++) {
+				if(y%2 == 0) {
+					_tabuleiro[x][y].cor='b';
+					_tabuleiro[++x][y].cor='p';
+				}
+				else {
+					_tabuleiro[x][y].cor='p';
+					_tabuleiro[++x][y].cor='b';
+				}
+			}
+		}
+		Main.janelaJogo.tab.repaint();
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent c) {
 		_tabuleiro = Tabuleiro.get_Tabuleiro();
@@ -112,6 +142,7 @@ public class Controlador implements MouseListener{
 				
 				System.out.println("Origem - tipo:" + _origem.peca.tipo + " time:" + _origem.peca.time);
 				//MOSTRAR TODAS AS POSSIVEIS JOGADAS DESSA PECA <--------------------------- LIV
+				verificaCaminhosLivres(_origem);
 			}
 			
 		}
@@ -152,7 +183,7 @@ public class Controlador implements MouseListener{
 						break;
 				}
 			}
-			
+			repaintTabuleiro();
 			_origem = null;
 			_destino = null;
 		}
