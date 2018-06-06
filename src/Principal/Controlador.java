@@ -94,31 +94,26 @@ public class Controlador implements MouseListener{
 	
 	public void verificaCaminhosLivres (Casa origem) {
 		int i,j;
-		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].cor='g';
+		
+		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].mov=true;
 		for(i=0;i<8;i++) {
 			for(j=0;j<8;j++) {
-				
-				if(_jogadas[_pos.x+8*_pos.y][i+8*j] == movimento.valido ) {
-					_tabuleiro[i][j].cor='y';
+				if(_jogadas[_pos.x+8*_pos.y][i+8*j] == movimento.valido || _jogadas[_pos.x+8*_pos.y][i+8*j] == movimento.ataque ) {
+					_tabuleiro[i][j].mov=true;
 				}
 			}
 		}
 		Main.janelaJogo.tab.repaint();
+	
 	}
 	
 	public void repaintTabuleiro() {
 		for (int y=0;y<8;y++) {
 			for(int x=0;x<8;x++) {
-				if(y%2 == 0) {
-					_tabuleiro[x][y].cor='b';
-					_tabuleiro[++x][y].cor='p';
-				}
-				else {
-					_tabuleiro[x][y].cor='p';
-					_tabuleiro[++x][y].cor='b';
-				}
+				_tabuleiro[x][y].mov=false;
 			}
 		}
+		
 		Main.janelaJogo.tab.repaint();
 	}
 	
@@ -126,6 +121,7 @@ public class Controlador implements MouseListener{
 	public void mouseClicked(MouseEvent c) {
 		_tabuleiro = Tabuleiro.get_Tabuleiro();
 		_jogadas = Tabuleiro.get_Jogadas();
+		char original = 'b';
 		
 		if(_origem == null) { // nao selecionaram quem vai atacar ate agora
 			_pos.set_Pos(c.getX(), c.getY());
@@ -143,6 +139,7 @@ public class Controlador implements MouseListener{
 				System.out.println("Origem - tipo:" + _origem.peca.tipo + " time:" + _origem.peca.time);
 				//MOSTRAR TODAS AS POSSIVEIS JOGADAS DESSA PECA <--------------------------- LIV
 				verificaCaminhosLivres(_origem);
+				
 			}
 			
 		}
@@ -163,7 +160,6 @@ public class Controlador implements MouseListener{
 					case valido:
 						System.out.println("Caminho Livre");
 						Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
-						Main.janelaJogo.tab.repaint();
 						//Tabuleiro.imprime();
 						
 						promoPeao(_destino);//PROMOCAO PEAO
@@ -194,8 +190,8 @@ public class Controlador implements MouseListener{
 			return;
 		
 		System.out.println("PROMOVE PEAO");
-		//TODO POP ALERT PERGUNTANDO PRO QUE QUER PROMOVER;
-		//TODO CONVERTER O TIPO DA PECA DA CASA PARA O TIPO QUE DESEJA PROMOVER;
+		//TODO: POP ALERT PERGUNTANDO PRO QUE QUER PROMOVER;
+		//TODO: CONVERTER O TIPO DA PECA DA CASA PARA O TIPO QUE DESEJA PROMOVER;
 	}
 	
 	@Override
