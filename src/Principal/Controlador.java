@@ -158,10 +158,31 @@ public class Controlador implements MouseListener{
 				repaintTabuleiro();
 				
 			}else if(!_destino.vazia() && _destino.peca.time == _origem.peca.time) {
-				_pos.set_Pos(_dest.x,_dest.y);
-				_origem = _destino;
-				verificaCaminhosLivres(_origem);
-				
+				if(_destino.peca.tipo == tPecas.torre && _origem.peca.tipo == tPecas.rei && _jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y] == movimento.valido) {
+					//ROQUE
+					
+					Posicao nRei = new Posicao();
+					Posicao nTorre = new Posicao();
+					int fat = 1;
+					
+					if(_pos.x> _dest.x) {
+						fat = -1;
+					}
+					
+					nRei.set_Pos(_pos.x+2*fat,_dest.y);
+					nTorre.set_Pos(nRei.x-1*fat,_dest.y);
+					
+					Tabuleiro.move_peca(_pos,nRei,_tabuleiro); // bota o rei duas casas mais perto da torre
+					Tabuleiro.move_peca(_dest,nTorre,_tabuleiro);  //bota a torre na casa do lado do rei
+					
+					_origem = null;
+					repaintTabuleiro();
+				}
+				else {
+					_pos.set_Pos(_dest.x,_dest.y);
+					_origem = _destino;
+					verificaCaminhosLivres(_origem);
+				}
 			} else {
 				switch(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y]) {
 					case invalido:
@@ -174,7 +195,7 @@ public class Controlador implements MouseListener{
 						
 						//Tabuleiro.imprime();
 						
-						promoPeao(_destino);//PROMOCAO PEAO
+						promoPeao(_destino); //PROMOCAO PEAO
 						vezBranco = !vezBranco;
 						
 						break;
@@ -200,7 +221,27 @@ public class Controlador implements MouseListener{
 			_destino = null;
 		}
 	}
-
+	
+	private Boolean caminhoBloqueado (Posicao a, Posicao b) {
+		int fat = 1;
+		System.out.println("oioi");
+		if(a.x>b.x) {
+			fat=-1;
+		}
+		
+		for(int i = a.x; i!=b.x; i+=fat) {
+			if(!_tabuleiro[i][a.y].vazia()) {
+				System.out.println("x: "+i+"y: "+a.y);
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	
+	
+	
 	private void promoPeao (Casa c) {
 		if(c.peca.tipo != tPecas.peao || (c.peca.time == 'b' && c.peca.pos.y!=0) || (c.peca.time == 'p' && c.peca.pos.y!=7))
 			return;

@@ -21,7 +21,7 @@ public class Tabuleiro {
 			}
 		}
 		
-		_casa[0][0].peca = (Torre) new Torre('p',new Posicao(0,0));		
+		_casa[0][0].peca = (Torre) new Torre('p',new Posicao());		
 		_casa[1][0].peca = (Cavalo) new Cavalo('p',new Posicao(1,0));
 		_casa[2][0].peca = (Bispo) new Bispo('p',new Posicao(2,0));
 		_casa[3][0].peca = (Rainha) new Rainha('p',new Posicao(3,0));
@@ -83,7 +83,7 @@ public class Tabuleiro {
 	}
 	
 	public static void update_Jogadas () {	
-		Posicao [] pReis = {new Posicao(0,0), new Posicao(0,0)};
+		Posicao [] pReis = {new Posicao(), new Posicao()};
 		int i=0;
 		for(int k = 0;k<64;k++)
 			for(int t=0;t<64;t++)

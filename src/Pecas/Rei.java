@@ -48,6 +48,25 @@ public class Rei extends PECA{
 			}
 		}
 		
+		//ROQUE
+		if(qtd_mov == 0) {
+			for(int X=pos.x-1;X>=0;X--) {
+				if(!casas[X][pos.y].vazia()) {
+					if(casas[X][pos.y].peca.tipo == tPecas.torre && casas[X][pos.y].peca.qtd_mov==0)
+						movs[X+8*pos.y] = movimento.valido;
+					break;
+				}
+			}
+		
+			for(int X=pos.x+1;X<8;X++) {
+				if(!casas[X][pos.y].vazia()) {
+					if(casas[X][pos.y].peca.tipo == tPecas.torre && casas[X][pos.y].peca.qtd_mov==0)
+						movs[X+8*pos.y] = movimento.valido;
+					break;
+				}
+			}
+		}
+		
 		return movs;
 	}
 }
