@@ -94,7 +94,7 @@ public class Controlador implements MouseListener{
 	public void verificaCaminhosLivres (Casa origem) {
 		int i,j;
 		
-		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].movT='p'; //indica que é a posição do próprio peão
+		
 		for(i=0;i<8;i++) {
 			for(j=0;j<8;j++) {
 				if(_jogadas[_pos.x+8*_pos.y][i+8*j] == movimento.valido) {
@@ -108,6 +108,7 @@ public class Controlador implements MouseListener{
 				}
 			}
 		}
+		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].movT='p'; //indica que é a posição do próprio peão
 		Main.janelaJogo.tab.repaint();
 	
 	}
