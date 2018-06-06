@@ -95,11 +95,15 @@ public class Controlador implements MouseListener{
 	public void verificaCaminhosLivres (Casa origem) {
 		int i,j;
 		
-		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].mov=true;
+		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].movT='p'; //indica que é a posição do próprio peão
 		for(i=0;i<8;i++) {
 			for(j=0;j<8;j++) {
-				if(_jogadas[_pos.x+8*_pos.y][i+8*j] == movimento.valido || _jogadas[_pos.x+8*_pos.y][i+8*j] == movimento.ataque ) {
-					_tabuleiro[i][j].mov=true;
+				if(_jogadas[_pos.x+8*_pos.y][i+8*j] == movimento.valido) {
+					_tabuleiro[i][j].movT='v';
+				}
+					
+				else if(_jogadas[_pos.x+8*_pos.y][i+8*j] == movimento.ataque ) {
+					_tabuleiro[i][j].movT='a';
 				}
 			}
 		}
@@ -110,7 +114,7 @@ public class Controlador implements MouseListener{
 	public void repaintTabuleiro() {
 		for (int y=0;y<8;y++) {
 			for(int x=0;x<8;x++) {
-				_tabuleiro[x][y].mov=false;
+				_tabuleiro[x][y].movT='0';
 			}
 		}
 		

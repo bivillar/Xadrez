@@ -57,6 +57,8 @@ public class DesenhoTabuleiro extends JPanel{
 		Color BROWN = new Color (139,69,19);
 		Color BEIGE = new Color (245,222,179);
 		Color YEL = new Color(255,255,100);
+		Color RED = new Color(214,0,0);
+		Color BLUE = new Color(0,116,224);
 		Color c = null;
 		BasicStroke espRet= new BasicStroke(t-3);
 	
@@ -84,9 +86,14 @@ public class DesenhoTabuleiro extends JPanel{
 				g2d.setPaint(c);
 				g2d.fill(ret);
 				
-				if (tabuleiro[i][j].mov){
+				if (tabuleiro[i][j].movT != '0'){
 					g2d.setStroke(espRet);
-					g2d.setColor(YEL);
+					if(tabuleiro[i][j].movT == 'v')
+						g2d.setColor(YEL);
+					else if (tabuleiro[i][j].movT == 'a')
+						g2d.setColor(RED);
+					else
+						g2d.setColor(BLUE);
 					g2d.draw(ret2);	
 				}
 				
