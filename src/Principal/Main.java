@@ -9,7 +9,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		Tabuleiro t = new Tabuleiro();
-		t.imprime();
+		//t.imprime();
 		janelaJogo = new Window(t.get_Tabuleiro());
 		
 		janelaJogo.setVisible(true);
