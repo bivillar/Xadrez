@@ -56,6 +56,9 @@ public class DesenhoTabuleiro extends JPanel{
 		Color BROWN = new Color (139,69,19);
 		Color BEIGE = new Color (245,222,179);
 		Color YEL = new Color(255,255,100);
+		Color c = null;
+		BasicStroke espRet= new BasicStroke(10f);
+	
 		PECA p;
 		
 		
@@ -63,23 +66,25 @@ public class DesenhoTabuleiro extends JPanel{
 		for(int i=0;i<8;i++) {
 			for (int j=0;j<8;j++) {
 				Rectangle2D ret=new Rectangle2D.Double(tam*i,tam*j,tam,tam);
-				if (tabuleiro[i][j].cor =='y'){
-					//g2d.setColor(Color.YELLOW);
+				switch (tabuleiro[i][j].cor) {
+					case 'g':
+						c=Color.GRAY;
+						break;
+					case 'b':
+						c=BEIGE;
+						break;
+					case 'p':
+						c=BROWN;
+						break;
+				}
+				
+				g2d.setPaint(c);
+				g2d.fill(ret);
+				
+				if (tabuleiro[i][j].mov){
+					g2d.setStroke(espRet);
 					g2d.setColor(YEL);
-					g2d.fill(ret);
-				}
-				else if(tabuleiro[i][j].cor =='g') {
-					g2d.setColor(Color.gray);
-					g2d.fill(ret);
-				}
-				else {
-					if (tabuleiro[i][j].cor =='b') {
-						g2d.setPaint(BEIGE);
-				}
-					else {
-						g2d.setPaint(BROWN);
-					}	
-					g2d.fill(ret);
+					g2d.draw(ret);	
 				}
 				
 				//DESENHA PECA
