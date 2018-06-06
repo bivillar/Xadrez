@@ -53,11 +53,12 @@ public class DesenhoTabuleiro extends JPanel{
 		
 		int tam=70;
 		int lado = 65;
+		int t = 10;
 		Color BROWN = new Color (139,69,19);
 		Color BEIGE = new Color (245,222,179);
 		Color YEL = new Color(255,255,100);
 		Color c = null;
-		BasicStroke espRet= new BasicStroke(10f);
+		BasicStroke espRet= new BasicStroke(t-3);
 	
 		PECA p;
 		
@@ -66,7 +67,7 @@ public class DesenhoTabuleiro extends JPanel{
 		for(int i=0;i<8;i++) {
 			for (int j=0;j<8;j++) {
 				Rectangle2D ret=new Rectangle2D.Double(tam*i,tam*j,tam,tam);
-				Rectangle2D ret2=new Rectangle2D.Double(tam*i+6,tam*j+6,tam-12,tam-12);
+				Rectangle2D ret2=new Rectangle2D.Double(tam*i+t/2,tam*j+t/2,tam-t,tam-t);
 				
 				switch (tabuleiro[i][j].cor) {
 					case 'g':
