@@ -42,7 +42,7 @@ public class Peao extends PECA{
 			if(qtd_mov == 0) {
 				y_vet = pos.y+2*fator;
 				
-				if(casas[pos.x][y_vet].vazia())
+				if(casas[pos.x][y_vet].vazia() && casas[pos.x][pos.y+fator].vazia())
 					movs[pos.x+8*y_vet] = movimento.valido;
 				else
 					movs[pos.x+8*y_vet] = movimento.bloqueado;

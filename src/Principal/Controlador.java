@@ -12,7 +12,6 @@ public class Controlador implements MouseListener{
 	private movimento _jogadas[][];
 	private Casa _origem = null;
 	private Casa _destino = null;
-	private Casa _atacada = null;
 	private Posicao _pos = new Posicao (0,0);
 	private Posicao _dest  = new Posicao (0,0);
 	private static boolean vezBranco = true;
@@ -101,9 +100,11 @@ public class Controlador implements MouseListener{
 				if(_jogadas[_pos.x+8*_pos.y][i+8*j] == movimento.valido) {
 					_tabuleiro[i][j].movT='v';
 				}
-					
 				else if(_jogadas[_pos.x+8*_pos.y][i+8*j] == movimento.ataque ) {
 					_tabuleiro[i][j].movT='a';
+				}
+				else{
+					_tabuleiro[i][j].movT='0';
 				}
 			}
 		}
@@ -135,15 +136,13 @@ public class Controlador implements MouseListener{
 				System.out.println("Tente outra vez");
 			
 			}else if(_origem.vazia()) { //nao tem peca
-				//TODO MOSTRAR UM ALERTA DE CASA VAZIA
 				System.out.println("Casa vazia, Tente outra vez");
 				_origem = null;
 			}else if((vezBranco && _origem.peca.time=='p') || (!vezBranco && _origem.peca.time=='b')) {
-				System.out.println("Não é sua vez"); //TODO MOSTRAR ALERT DIZENDO QUE NAO É SUA VEZ
+				System.out.println("Não é sua vez");
 				_origem = null;
 			}
 			else {
-				System.out.println("Origem - tipo:" + _origem.peca.tipo + " time:" + _origem.peca.time);
 				verificaCaminhosLivres(_origem);
 			}
 			
@@ -152,11 +151,16 @@ public class Controlador implements MouseListener{
 			_dest.set_Pos(c.getX(), c.getY());
 			_destino = get_casa(_dest,_tabuleiro);
 			
-			if(_origem == _destino || _destino ==null) {
-				// ALERT DE MOVIMENTO INVALIDO <--------------------------- LIV
+			if(_origem == _destino || _destino == null) {
 				System.out.println("Tente outra vez");
+				_origem = null;
 				
-			}else {
+			}else if(!_destino.vazia() && _destino.peca.time == _origem.peca.time) {
+				_pos.set_Pos(_dest.x,_dest.y);
+				_origem = _destino;
+				verificaCaminhosLivres(_origem);
+				
+			} else {
 				switch(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y]) {
 					case invalido:
 						System.out.println("Movimento Inválido");
@@ -170,7 +174,6 @@ public class Controlador implements MouseListener{
 						
 						promoPeao(_destino);//PROMOCAO PEAO
 						vezBranco = !vezBranco;
-						System.out.println(vezBranco);
 						
 						break;
 					case ataque:
@@ -189,9 +192,9 @@ public class Controlador implements MouseListener{
 						//Tabuleiro.imprime();
 						break;
 				}
+				repaintTabuleiro();
+				_origem = null;
 			}
-			repaintTabuleiro();
-			_origem = null;
 			_destino = null;
 		}
 	}
