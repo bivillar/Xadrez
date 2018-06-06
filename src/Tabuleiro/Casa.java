@@ -10,7 +10,7 @@ public class Casa {
 	public Casa (char Cor, PECA Peca) {
 		cor = Cor;
 		peca = Peca;
-		mov=false;
+		mov = false;
 	}
 	
 	public boolean vazia() {

@@ -66,6 +66,8 @@ public class DesenhoTabuleiro extends JPanel{
 		for(int i=0;i<8;i++) {
 			for (int j=0;j<8;j++) {
 				Rectangle2D ret=new Rectangle2D.Double(tam*i,tam*j,tam,tam);
+				Rectangle2D ret2=new Rectangle2D.Double(tam*i+6,tam*j+6,tam-12,tam-12);
+				
 				switch (tabuleiro[i][j].cor) {
 					case 'g':
 						c=Color.GRAY;
@@ -84,7 +86,7 @@ public class DesenhoTabuleiro extends JPanel{
 				if (tabuleiro[i][j].mov){
 					g2d.setStroke(espRet);
 					g2d.setColor(YEL);
-					g2d.draw(ret);	
+					g2d.draw(ret2);	
 				}
 				
 				//DESENHA PECA
