@@ -154,6 +154,7 @@ public class Controlador implements MouseListener{
 			if(_origem == _destino || _destino == null) {
 				System.out.println("Tente outra vez");
 				_origem = null;
+				repaintTabuleiro();
 				
 			}else if(!_destino.vazia() && _destino.peca.time == _origem.peca.time) {
 				_pos.set_Pos(_dest.x,_dest.y);

@@ -59,7 +59,7 @@ public class Torre extends PECA{
 				break;
 			}
 			
-			movs[pos.x + 8*(pos.y)] = movimento.valido;
+			movs[x + 8*(pos.y)] = movimento.valido;
 		}
 
 		//mesmo y, indo pra direita
@@ -73,7 +73,7 @@ public class Torre extends PECA{
 				break;
 			}
 			
-			movs[pos.x + 8*(pos.y)] = movimento.valido;
+			movs[x + 8*(pos.y)] = movimento.valido;
 		}
 		return movs;
 	}
