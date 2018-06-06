@@ -176,7 +176,9 @@ public class Controlador implements MouseListener{
 					Tabuleiro.move_peca(_dest,nTorre,_tabuleiro);  //bota a torre na casa do lado do rei
 					
 					_origem = null;
+					vezBranco = !vezBranco;
 					repaintTabuleiro();
+					
 				}
 				else {
 					_pos.set_Pos(_dest.x,_dest.y);
