@@ -158,27 +158,32 @@ public class Controlador implements MouseListener{
 				repaintTabuleiro();
 				
 			}else if(!_destino.vazia() && _destino.peca.time == _origem.peca.time) {
-				if(_destino.peca.tipo == tPecas.torre && _origem.peca.tipo == tPecas.rei && _jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y] == movimento.valido) {
-					//ROQUE
-					
-					Posicao nRei = new Posicao();
-					Posicao nTorre = new Posicao();
-					int fat = 1;
-					
-					if(_pos.x> _dest.x) {
-						fat = -1;
+				if(_destino.peca.tipo == tPecas.torre && _origem.peca.tipo == tPecas.rei) {
+					if(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y] == movimento.valido) {
+						//ROQUE
+						
+						Posicao nRei = new Posicao();
+						Posicao nTorre = new Posicao();
+						int fat = 1;
+						
+						if(_pos.x> _dest.x) {
+							fat = -1;
+						}
+						
+						nRei.set_Pos(_pos.x+2*fat,_dest.y);
+						nTorre.set_Pos(nRei.x-1*fat,_dest.y);
+						
+						Tabuleiro.move_peca(_pos,nRei,_tabuleiro); // bota o rei duas casas mais perto da torre
+						Tabuleiro.move_peca(_dest,nTorre,_tabuleiro);  //bota a torre na casa do lado do rei
+						
+						
+						vezBranco = !vezBranco;
+						
 					}
-					
-					nRei.set_Pos(_pos.x+2*fat,_dest.y);
-					nTorre.set_Pos(nRei.x-1*fat,_dest.y);
-					
-					Tabuleiro.move_peca(_pos,nRei,_tabuleiro); // bota o rei duas casas mais perto da torre
-					Tabuleiro.move_peca(_dest,nTorre,_tabuleiro);  //bota a torre na casa do lado do rei
-					
+
 					_origem = null;
-					vezBranco = !vezBranco;
 					repaintTabuleiro();
-					
+
 				}
 				else {
 					_pos.set_Pos(_dest.x,_dest.y);
