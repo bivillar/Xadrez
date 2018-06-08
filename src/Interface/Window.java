@@ -1,30 +1,41 @@
 package Interface;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 import Principal.Controlador;
 import Tabuleiro.*;
 
-public class Window extends JFrame{
+public class Window extends JFrame implements ActionListener{
 
+	protected JButton novo, carregar;
     public final int LARG_DEFAULT=560;
     public final int ALT_DEFAULT=582;
     public DesenhoTabuleiro tab;
-    private DesenhoPecas p;
     
     public Window(Casa t[][]) {
         
-        //p=new DesenhoPecas();
-        //p.inicializaImagens(t);
         tab = new DesenhoTabuleiro(t);
-        /*
-        JButton novo, carregar;
         
-        novo=new JButton("Novo Jogo");
-        novo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        carregar= new JButton("Carregar Jogo");
-        carregar.setAlignmentX(Component.CENTER_ALIGNMENT);
-        */
+//        JPanel panel = new JPanel();
+        
+//        novo = new JButton("Novo Jogo");
+//        novo.setVerticalTextPosition(AbstractButton.CENTER);
+//        novo.setHorizontalTextPosition(AbstractButton.LEADING);
+//        novo.setBounds(100, 100, 100, 100);
+//        novo.setActionCommand("novo");
+//        
+//        carregar = new JButton("Carregar Jogo");
+//        carregar.setVerticalTextPosition(AbstractButton.CENTER);
+//        carregar.setHorizontalTextPosition(AbstractButton.CENTER);
+//        carregar.setBounds(100, 100, 100, 100);
+//        carregar.setActionCommand("carregar");
+//        
+//        novo.addActionListener(this);
+//        carregar.addActionListener(this);
+        
         Toolkit tk=Toolkit.getDefaultToolkit();
         Dimension screenSize=tk.getScreenSize();
         int sl=screenSize.width;
@@ -37,9 +48,25 @@ public class Window extends JFrame{
         setTitle("Xadrez");
         getContentPane().add(tab);
         
+//        panel.setPreferredSize(new Dimension(100, 100));
+//        panel.add(novo);
+//        panel.add(carregar);
+//        getContentPane().add(panel, BorderLayout.CENTER);
+
         
-        
+//        	JButton novo, carregar;
     }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+//		if("novo".equals(e.getActionCommand())) {
+//			getContentPane().add(tab);
+//		}else {
+//			//TODO carregar
+//		}
+//		
+//		
+	}
     
     
 }
