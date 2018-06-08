@@ -10,7 +10,7 @@ import Tabuleiro.*;
 
 public class Window extends JFrame implements ActionListener{
 
-	protected JButton novo, carregar;
+//	protected JButton novo, carregar;
     public final int LARG_DEFAULT=560;
     public final int ALT_DEFAULT=582;
     public DesenhoTabuleiro tab;
@@ -53,8 +53,6 @@ public class Window extends JFrame implements ActionListener{
 //        panel.add(carregar);
 //        getContentPane().add(panel, BorderLayout.CENTER);
 
-        
-//        	JButton novo, carregar;
     }
 
 	@Override
@@ -63,9 +61,7 @@ public class Window extends JFrame implements ActionListener{
 //			getContentPane().add(tab);
 //		}else {
 //			//TODO carregar
-//		}
-//		
-//		
+//		}	
 	}
     
     
