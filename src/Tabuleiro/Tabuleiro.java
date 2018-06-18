@@ -108,6 +108,22 @@ public class Tabuleiro {
 		
 	}
 	
+	public static void promovePeao(Posicao pos, String tipo) {
+		switch(tipo) {
+			case "Rainha":
+				_casa[pos.x][pos.y].peca = (Rainha) new Rainha(_casa[pos.x][pos.y].peca.time,pos);
+				break;
+			case "Torre":
+				_casa[pos.x][pos.y].peca = (Torre) new Torre(_casa[pos.x][pos.y].peca.time,pos);
+				break;
+			case "Bispo":
+				_casa[pos.x][pos.y].peca = (Bispo) new Bispo(_casa[pos.x][pos.y].peca.time,pos);
+				break;
+			case "Cavalo":
+				_casa[pos.x][pos.y].peca = (Cavalo) new Cavalo(_casa[pos.x][pos.y].peca.time,pos);
+				break;
+		}
+	}
 	
 	public static void imprime () {
 		char aux=' ';

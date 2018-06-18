@@ -16,11 +16,6 @@ public class Controlador implements MouseListener{
 	private Posicao _pos = new Posicao (0,0);
 	private Posicao _dest  = new Posicao (0,0);
 	private static boolean vezBranco = true;
-	static Window _janela;
-	
-	public Controlador(Window janelaJogo) {
-		_janela = janelaJogo;
-	}
 	
 	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que estao dentro dela, se houver
 		//int x,y;
@@ -220,13 +215,13 @@ public class Controlador implements MouseListener{
 							else
 								time = "PRETO";
 								
-								JOptionPane.showMessageDialog(_janela,
+								JOptionPane.showMessageDialog(Main.janelaJogo,
 									    "XEQUE-MATE!!\n VITORIA DO TIME "+time,
 									    "Aviso",
 									    JOptionPane.PLAIN_MESSAGE);
 						}
 						Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
-						Main.janelaJogo.tab.repaint();
+						
 						
 						//Tabuleiro.imprime();
 						verifica_xeque(_destino);
@@ -249,20 +244,19 @@ public class Controlador implements MouseListener{
 	private void verifica_xeque (Casa c){
 		String time;
 		if(c.peca.time == 'b')
-			time = "PRETO";
-		else
 			time = "BRANCO";
+		else
+			time = "PRETO";
 		
 		for(int x=0;x<8;x++) {
 			for(int y=0;y<8;y++) {
 				if((_jogadas[c.peca.pos.x + 8*c.peca.pos.y][x+8*y]==movimento.ataque || _jogadas[c.peca.pos.x + 8*c.peca.pos.y][x+8*y]==movimento.ataque_valido)
 						&& !_tabuleiro[x][y].vazia() && _tabuleiro[x][y].peca.tipo == tPecas.rei) {
-					System.out.println("OI ENTROU\n c.peca.pos.x:" + c.peca.pos.x + "c.peca.pos.y:" +c.peca.pos.y + " e x:" +x + "y:"+y );
 					for(int X=0;X<8;X++) {
 						for(int Y=0;Y<8;Y++) {
 							if(_jogadas[x+8*y][X+8*Y] == movimento.valido || _jogadas[x+8*y][X+8*Y] == movimento.ataque) {
 								
-								JOptionPane.showMessageDialog(_janela,
+								JOptionPane.showMessageDialog(Main.janelaJogo,
 									    "XEQUE PELO TIME "+time,
 									    "Aviso",
 									    JOptionPane.WARNING_MESSAGE);
@@ -272,7 +266,7 @@ public class Controlador implements MouseListener{
 							}
 						}
 					}
-					JOptionPane.showMessageDialog(_janela,
+					JOptionPane.showMessageDialog(Main.janelaJogo,
 						    "XEQUE-MATE!!\n VITORIA DO TIME: "+time,
 						    "Aviso",
 						    JOptionPane.WARNING_MESSAGE);
@@ -303,12 +297,24 @@ public class Controlador implements MouseListener{
 	
 	
 	private void promoPeao (Casa c) {
+		String poss[]= {"Rainha","Torre", "Bispo", "Cavalo"};
+		String tipo;
+		
 		if(c.peca.tipo != tPecas.peao || (c.peca.time == 'b' && c.peca.pos.y!=0) || (c.peca.time == 'p' && c.peca.pos.y!=7))
 			return;
 		
 		System.out.println("PROMOVE PEAO");
-		//TODO: POP ALERT PERGUNTANDO PRO QUE QUER PROMOVER;
-		//TODO: CONVERTER O TIPO DA PECA DA CASA PARA O TIPO QUE DESEJA PROMOVER;
+		
+		tipo= (String)JOptionPane.showInputDialog(
+		                    Main.janelaJogo,
+		                    "PROMOÇÃO DO PEÃO!!\n"
+		                    + "Escolha o tipo de peca:",
+		                    "ATENÇÃO",
+		                    JOptionPane.PLAIN_MESSAGE,
+		                    null, poss,
+		                    "Rainha");
+		
+		Tabuleiro.promovePeao(c.peca.pos,tipo);
 	}
 	
 	@Override
