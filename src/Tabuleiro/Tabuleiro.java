@@ -76,11 +76,7 @@ public class Tabuleiro {
 		tab[dest.x][dest.y].peca.qtd_mov++;
 		update_Jogadas();
 	}
-	
-	public static void remove_peca(Posicao pos, Casa[][] tab) {
-		tab[pos.x][pos.y].peca = null;
-		update_Jogadas();
-	}
+
 	
 	public static void update_Jogadas () {	
 		Posicao [] pReis = {new Posicao(), new Posicao()};
@@ -108,11 +104,12 @@ public class Tabuleiro {
 		
 	}
 	
-	public static void xeque(Posicao pos) {
+	public static void xeque(Posicao pos, Posicao rei) {
 		for(int k=0;k<64;k++) {
 			for(int t=0;t<64;t++){
-				if(t != pos.x+8*pos.y) // so deixa manter as jogadas que tiram o xeque
+				if(t != pos.x+8*pos.y && k!= rei.x+8*rei.y) // so deixa manter as jogadas que tiram o xeque
 					_jogadas[k][t] = movimento.invalido;
+				
 			}	
 		}
 	}

@@ -45,7 +45,7 @@ public class Peao extends PECA{
 				if(casas[pos.x][y_vet].vazia() && casas[pos.x][pos.y+fator].vazia())
 					movs[pos.x+8*y_vet] = movimento.valido;
 				else
-					movs[pos.x+8*y_vet] = movimento.bloqueado;
+					movs[pos.x+8*y_vet] = movimento.invalido;
 			}
 	
 			y_vet = pos.y+1*fator;
@@ -53,19 +53,31 @@ public class Peao extends PECA{
 			if(pos.x != 7) { // ainda tem espaco pra direita
 				x_vet = pos.x+1;
 				
-				if(!casas[x_vet][y_vet].vazia() && casas[x_vet][y_vet].peca.time!= time)
-					movs[x_vet+8*(y_vet)] = movimento.ataque;
-				else if(casas[x_vet][y_vet].vazia())
+				if(!casas[x_vet][y_vet].vazia()) {
+					if(casas[x_vet][y_vet].peca.time!= time) {
+						movs[x_vet+8*(y_vet)] = movimento.ataque;
+					}else {
+						movs[x_vet+8*(y_vet)] = movimento.bloqueado;
+					}
+				}
+				else if(casas[x_vet][y_vet].vazia()) {
 					movs[x_vet+8*(y_vet)] = movimento.ataque_valido;
+				}
 			}
 			
 			if(pos.x != 0) { // ainda tem espaço pra esquerda
 				x_vet = pos.x-1;
 				
-				if(!casas[x_vet][y_vet].vazia() && casas[x_vet][y_vet].peca.time!= time)
-					movs[x_vet+8*(y_vet)] = movimento.ataque;
-				else if(casas[x_vet][y_vet].vazia())
+				if(!casas[x_vet][y_vet].vazia()) {
+					if (casas[x_vet][y_vet].peca.time!= time) {
+						movs[x_vet+8*(y_vet)] = movimento.ataque;
+					}else {
+						movs[x_vet+8*(y_vet)] = movimento.bloqueado;
+					}
+				}
+				else if(casas[x_vet][y_vet].vazia()) {
 					movs[x_vet+8*(y_vet)] = movimento.ataque_valido;
+				}
 			}
 		}
 		

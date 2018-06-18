@@ -24,10 +24,21 @@ public class Rei extends PECA{
 			
 			if(x<8 && x>=0 && y<8 && y>=0) {
 				if(!casas[x][y].vazia()) {
-					if(casas[x][y].peca.time!=time)
+					if(casas[x][y].peca.time!=time) {
 						movs[x+8*y] = movimento.ataque;
-					else
+						outerloop:
+						for(int Y =0; Y<8;Y++) {
+							for(int X = 0;X<8;X++) {
+								if(jogadas[X+8*Y][x+8*y] == movimento.bloqueado) {
+									movs[x+8*y] = movimento.invalido;
+									break outerloop;
+								}
+							}
+						}
+					}
+					else {
 						movs[x+8*y] = movimento.bloqueado;
+					}
 				}
 				else {
 					movs[x+8*y] = movimento.valido;
