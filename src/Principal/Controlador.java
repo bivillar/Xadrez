@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 import Tabuleiro.*;
 import Pecas.*;
 import Interface.*;
+import javax.swing.*;
 
 public class Controlador implements MouseListener{
 	private Casa _tabuleiro[][];
@@ -15,6 +16,11 @@ public class Controlador implements MouseListener{
 	private Posicao _pos = new Posicao (0,0);
 	private Posicao _dest  = new Posicao (0,0);
 	private static boolean vezBranco = true;
+	static Window _janela;
+	
+	public Controlador(Window janelaJogo) {
+		_janela = janelaJogo;
+	}
 	
 	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que estao dentro dela, se houver
 		//int x,y;
@@ -127,6 +133,7 @@ public class Controlador implements MouseListener{
 	public void mouseClicked(MouseEvent c) {
 		_tabuleiro = Tabuleiro.get_Tabuleiro();
 		_jogadas = Tabuleiro.get_Jogadas();
+		String time="";
 		//char original = 'b';
 		
 		if(_origem == null) { // nao selecionaram quem vai atacar ate agora
@@ -201,18 +208,28 @@ public class Controlador implements MouseListener{
 						Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
 						
 						//Tabuleiro.imprime();
-						
+						verifica_xeque(_destino);
 						promoPeao(_destino); //PROMOCAO PEAO
-						vezBranco = !vezBranco;
-						
+						vezBranco = !vezBranco;	
 						break;
 					case ataque:
 						System.out.println("ATAQUE!");
+						if(_destino.peca.tipo == tPecas.rei) {
+							if(_destino.peca.time == 'b')
+								time = "PRETO";
+							else
+								time = "BRANCO";
+								
+								JOptionPane.showMessageDialog(_janela,
+									    "XEQUE-MATE!!\n VITORIA DO TIME "+time,
+									    "Aviso",
+									    JOptionPane.PLAIN_MESSAGE);
+						}
 						Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
 						Main.janelaJogo.tab.repaint();
 						
 						//Tabuleiro.imprime();
-						
+						verifica_xeque(_destino);
 						promoPeao(_destino); //PROMOCAO PEAO
 						vezBranco = !vezBranco;
 						break;
@@ -227,6 +244,41 @@ public class Controlador implements MouseListener{
 			}
 			_destino = null;
 		}
+	}
+	
+	private void verifica_xeque (Casa c){
+		String time;
+		for(int x=0;x<8;x++) {
+			for(int y=0;y<8;y++) {
+				if((_jogadas[c.peca.pos.x + 8*c.peca.pos.y][x+8*y]==movimento.ataque || _jogadas[c.peca.pos.x + 8*c.peca.pos.y][x+8*y]==movimento.ataque_valido)
+						&& !_tabuleiro[x][y].vazia() && _tabuleiro[x][y].peca.tipo == tPecas.rei) {
+					System.out.println("OI ENTROU\n c.peca.pos.x:" + c.peca.pos.x + "c.peca.pos.y:" +c.peca.pos.y + " e x:" +x + "y:"+y );
+					for(int X=0;X<8;X++) {
+						for(int Y=0;Y<8;Y++) {
+							if(_jogadas[x+8*y][X+8*Y] == movimento.valido || _jogadas[x+8*y][X+8*Y] == movimento.ataque) {
+								if(c.peca.time == 'b')
+									time = "PRETO";
+								else
+									time = "BRANCO";
+								
+								JOptionPane.showMessageDialog(_janela,
+									    "XEQUE NO TIME "+time,
+									    "Aviso",
+									    JOptionPane.WARNING_MESSAGE);
+								
+								System.out.println("XEQUE!!");
+								return;
+							}
+						}
+					}
+					JOptionPane.showMessageDialog(_janela,
+						    "XEQUE-MATE!!",
+						    "Aviso",
+						    JOptionPane.WARNING_MESSAGE);
+					System.out.println("XEQUE-MATE!!");
+				}
+			}
+		}				
 	}
 	
 	private Boolean caminhoBloqueado (Posicao a, Posicao b) {

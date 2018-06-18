@@ -13,7 +13,7 @@ public class Main {
 		janelaJogo = new Window(t.get_Tabuleiro());
 		
 		janelaJogo.setVisible(true);
-		janelaJogo.addMouseListener(new Controlador());
+		janelaJogo.addMouseListener(new Controlador(janelaJogo));
 	}
 
 }
