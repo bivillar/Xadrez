@@ -108,6 +108,15 @@ public class Tabuleiro {
 		
 	}
 	
+	public static void xeque(Posicao pos) {
+		for(int k=0;k<64;k++) {
+			for(int t=0;t<64;t++){
+				if(t != pos.x+8*pos.y) // so deixa manter as jogadas que tiram o xeque
+					_jogadas[k][t] = movimento.invalido;
+			}	
+		}
+	}
+	
 	public static void promovePeao(Posicao pos, String tipo) {
 		switch(tipo) {
 			case "Rainha":

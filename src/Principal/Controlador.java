@@ -16,7 +16,7 @@ public class Controlador implements MouseListener{
 	private Posicao _pos = new Posicao (0,0);
 	private Posicao _dest  = new Posicao (0,0);
 	private static boolean vezBranco = true;
-	
+		
 	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que estao dentro dela, se houver
 		//int x,y;
 		
@@ -262,6 +262,7 @@ public class Controlador implements MouseListener{
 									    JOptionPane.WARNING_MESSAGE);
 								
 								System.out.println("XEQUE!!");
+								Tabuleiro.xeque(c.peca.pos);
 								return;
 							}
 						}
@@ -305,7 +306,7 @@ public class Controlador implements MouseListener{
 		
 		System.out.println("PROMOVE PEAO");
 		
-		tipo= (String)JOptionPane.showInputDialog(
+		tipo= (String)JOptionPane.showInputDialog( //TODO nos requisitos diz que é pra ser jPopMenu mas prefiro assim...
 		                    Main.janelaJogo,
 		                    "PROMOÇÃO DO PEÃO!!\n"
 		                    + "Escolha o tipo de peca:",
