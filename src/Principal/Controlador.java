@@ -216,9 +216,9 @@ public class Controlador implements MouseListener{
 						System.out.println("ATAQUE!");
 						if(_destino.peca.tipo == tPecas.rei) {
 							if(_destino.peca.time == 'b')
-								time = "PRETO";
-							else
 								time = "BRANCO";
+							else
+								time = "PRETO";
 								
 								JOptionPane.showMessageDialog(_janela,
 									    "XEQUE-MATE!!\n VITORIA DO TIME "+time,
@@ -248,6 +248,11 @@ public class Controlador implements MouseListener{
 	
 	private void verifica_xeque (Casa c){
 		String time;
+		if(c.peca.time == 'b')
+			time = "PRETO";
+		else
+			time = "BRANCO";
+		
 		for(int x=0;x<8;x++) {
 			for(int y=0;y<8;y++) {
 				if((_jogadas[c.peca.pos.x + 8*c.peca.pos.y][x+8*y]==movimento.ataque || _jogadas[c.peca.pos.x + 8*c.peca.pos.y][x+8*y]==movimento.ataque_valido)
@@ -256,13 +261,9 @@ public class Controlador implements MouseListener{
 					for(int X=0;X<8;X++) {
 						for(int Y=0;Y<8;Y++) {
 							if(_jogadas[x+8*y][X+8*Y] == movimento.valido || _jogadas[x+8*y][X+8*Y] == movimento.ataque) {
-								if(c.peca.time == 'b')
-									time = "PRETO";
-								else
-									time = "BRANCO";
 								
 								JOptionPane.showMessageDialog(_janela,
-									    "XEQUE NO TIME "+time,
+									    "XEQUE PELO TIME "+time,
 									    "Aviso",
 									    JOptionPane.WARNING_MESSAGE);
 								
@@ -272,7 +273,7 @@ public class Controlador implements MouseListener{
 						}
 					}
 					JOptionPane.showMessageDialog(_janela,
-						    "XEQUE-MATE!!",
+						    "XEQUE-MATE!!\n VITORIA DO TIME: "+time,
 						    "Aviso",
 						    JOptionPane.WARNING_MESSAGE);
 					System.out.println("XEQUE-MATE!!");
