@@ -1,11 +1,17 @@
 package Principal;
 
 import java.awt.event.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import Tabuleiro.*;
 import Pecas.*;
 import Interface.*;
 import javax.swing.*;
+
+
 
 public class Controlador implements MouseListener{
 	private Casa _tabuleiro[][];
@@ -123,8 +129,80 @@ public class Controlador implements MouseListener{
 		Main.janelaJogo.tab.repaint();
 	}
 
+	public void Salvar(BufferedWriter fileWriter) {
+		try {
+			fileWriter.write(String.valueOf(vezBranco));
+			fileWriter.newLine();
+			
+			char aux;
+        	for(int y=0; y<8;y++){
+    			for(int x=0; x<8;x++){
+    				aux=' ';
+    				switch(_tabuleiro[x][y].peca.tipo){
+					case peao:
+						aux = 'p';
+						break;
+					case torre:
+						aux = 't';
+						break;
+					case cavalo:
+						aux = 'c';
+						break;
+					case bispo:
+						aux = 'b';
+						break;
+					case rainha:
+						aux = 'a';
+						break;
+					case rei:
+						aux = 'e';
+						break;
+					}
+    				if(_tabuleiro[x][y].peca.time == 'b')
+						aux = Character.toUpperCase(aux);
+    				fileWriter.write(aux);
+    			}
+    			fileWriter.newLine();
+        	}
+			
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 	@Override
 	public void mouseClicked(MouseEvent c) {
+		
+		//Botao direito -> salvar jogo
+		if(SwingUtilities.isRightMouseButton(c)) {
+			System.out.println("Right Worked");
+			
+			final JFileChooser fc = new JFileChooser();
+			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+			int retrival = fc.showSaveDialog(null);
+			if (retrival == JFileChooser.APPROVE_OPTION) {
+		        try {
+		        	FileWriter w = new FileWriter(fc.getSelectedFile() + ".txt", false);
+		        	BufferedWriter fw = new BufferedWriter(w);
+		        	
+		        	// COLOCAR O QUE SALVAR 
+		        	Salvar(fw);
+		        	
+		            fw.close();
+		        } catch (Exception ex) {
+		        	// Error writing game file
+		            ex.printStackTrace();
+		        }
+			}
+		}
+			
+		
+		
 		_tabuleiro = Tabuleiro.get_Tabuleiro();
 		_jogadas = Tabuleiro.get_Jogadas();
 		String time="";
