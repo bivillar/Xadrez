@@ -3,11 +3,16 @@ package Interface;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import Principal.Controlador;
 import Tabuleiro.*;
 
@@ -21,10 +26,11 @@ public class Window extends JFrame implements ActionListener{
     private JButton novo,carregar;
     private JLabel l;
     private Image img;
+    private Casa[][] tabuleiro;
     
     public Window(Casa t[][]) {
         
-    	tab = new DesenhoTabuleiro(t);
+    	tabuleiro=t;
         
         panel = new JPanel();
         try {
@@ -78,11 +84,32 @@ public class Window extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if("novo".equals(e.getActionCommand())) {
 			panel.setVisible(false);
+			tab= new DesenhoTabuleiro(tabuleiro);
 			getContentPane().add(tab);
 			
 			
 		}else {
 			//TODO carregar
+			
+			final JFileChooser fc = new JFileChooser();
+			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+			int retrival = fc.showSaveDialog(null);
+			if (retrival == JFileChooser.APPROVE_OPTION) {
+		        try {
+		        	FileReader r = new FileReader(fc.getSelectedFile() + ".txt");
+		        	BufferedReader fr = new BufferedReader(r);
+		        	
+		        	// LER O ARQUIVO
+		        	//tabuleiro=Carregar(fr);
+		        	//tab= new DesenhoTabuleiro(tabuleiro);
+					//getContentPane().add(tab);
+		        	
+		            fr.close();
+		        } catch (Exception ex) {
+		        	// Error writing game file
+		            ex.printStackTrace();
+		        }
+			}
 			
 		}	
 	}
