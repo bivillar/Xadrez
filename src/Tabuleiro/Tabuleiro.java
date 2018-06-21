@@ -1,10 +1,14 @@
 package Tabuleiro;
 
+
+import java.io.BufferedWriter;
+
 import Pecas.*;
 
 public class Tabuleiro {
 	private static Casa _casa[][] = new Casa[8][8];
 	private static movimento _jogadas[][] = new movimento[64][64];
+	
 	
 	public Tabuleiro () {
 		
@@ -130,6 +134,9 @@ public class Tabuleiro {
 				break;
 		}
 	}
+	
+	
+	
 	
 	public static void imprime () {
 		char aux=' ';
