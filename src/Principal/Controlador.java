@@ -9,7 +9,9 @@ import java.io.IOException;
 import Tabuleiro.*;
 import Pecas.*;
 import Interface.*;
+
 import javax.swing.*;
+
 
 
 
@@ -21,6 +23,7 @@ public class Controlador implements MouseListener{
 	private Posicao _pos = new Posicao (0,0);
 	private Posicao _dest  = new Posicao (0,0);
 	private static boolean vezBranco = true;
+	private ObserverTab obsTab;
 
 	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que estao dentro dela, se houver
 		//int x,y;
@@ -115,7 +118,8 @@ public class Controlador implements MouseListener{
 			}
 		}
 		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].movT='p'; //indica que é a posição do próprio peão
-		Main.janelaJogo.tab.repaint();
+		obsTab.notify();
+		//Main.janelaJogo.tab.repaint();
 
 	}
 
@@ -125,42 +129,24 @@ public class Controlador implements MouseListener{
 				_tabuleiro[x][y].movT='0';
 			}
 		}
-
+		
+		//obsTab.notify();
 		Main.janelaJogo.tab.repaint();
 	}
 
+	
+	//NAO ESTA FUNCIONANDO DIREITO
 	public void Salvar(BufferedWriter fileWriter) {
 		try {
 			fileWriter.write(String.valueOf(vezBranco));
 			fileWriter.newLine();
 			
-			char aux;
-        	for(int y=0; y<8;y++){
-    			for(int x=0; x<8;x++){
-    				aux=' ';
-    				switch(_tabuleiro[x][y].peca.tipo){
-					case peao:
-						aux = 'p';
-						break;
-					case torre:
-						aux = 't';
-						break;
-					case cavalo:
-						aux = 'c';
-						break;
-					case bispo:
-						aux = 'b';
-						break;
-					case rainha:
-						aux = 'a';
-						break;
-					case rei:
-						aux = 'e';
-						break;
-					}
-    				if(_tabuleiro[x][y].peca.time == 'b')
-						aux = Character.toUpperCase(aux);
-    				fileWriter.write(aux);
+        	for(int i=0; i<8;i++){
+    			for(int j=0; j<8;j++){
+    				if (_tabuleiro[i][j].peca != null){
+    					fileWriter.write("B" + _tabuleiro[i][j].peca.tipo );
+    				}
+    				
     			}
     			fileWriter.newLine();
         	}
@@ -171,6 +157,11 @@ public class Controlador implements MouseListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+
+	//FAZER
+	public void Carregar(BufferedWriter arqLeitura){
 		
 	}
 	
@@ -452,6 +443,11 @@ public class Controlador implements MouseListener{
 		Main.janelaJogo.setVisible(true);  
 	}
 
+	
+	
+	
+	
+	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
