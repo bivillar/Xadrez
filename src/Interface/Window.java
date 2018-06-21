@@ -100,7 +100,7 @@ public class Window extends JFrame implements ActionListener{
 		        	BufferedReader fr = new BufferedReader(r);
 		        	
 		        	// LER O ARQUIVO
-		        	//tabuleiro=Carregar(fr);
+		        	//Carregar(fr);
 		        	//tab= new DesenhoTabuleiro(tabuleiro);
 					//getContentPane().add(tab);
 		        	
