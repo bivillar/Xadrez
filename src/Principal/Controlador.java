@@ -117,9 +117,9 @@ public class Controlador implements MouseListener{
 				}
 			}
 		}
-		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].movT='p'; //indica que é a posição do próprio peão
-		obsTab.notify();
-		//Main.janelaJogo.tab.repaint();
+		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].movT='p'; //indica que Ã© a posiÃ§Ã£o do prÃ³prio peÃ£o
+		//obsTab.notify();
+		Main.janelaJogo.tab.repaint();
 
 	}
 
@@ -210,7 +210,7 @@ public class Controlador implements MouseListener{
 				System.out.println("Casa vazia, Tente outra vez");
 				_origem = null;
 			}else if((vezBranco && _origem.peca.time=='p') || (!vezBranco && _origem.peca.time=='b')) {
-				System.out.println("Não é sua vez");
+				System.out.println("NÃ£o Ã© sua vez");
 				_origem = null;
 			}
 			else {
@@ -263,7 +263,7 @@ public class Controlador implements MouseListener{
 			} else {
 				switch(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y]) {
 				case invalido:
-					System.out.println("Movimento Inválido");
+					System.out.println("Movimento InvÃ¡lido");
 					//Tabuleiro.imprime();
 					break;
 				case valido:
@@ -301,7 +301,7 @@ public class Controlador implements MouseListener{
 					break;
 				case bloqueado:
 					//MOSTRAR UM ALERT DIZENDO QUE A PECA TA BLOQUEADA <--------------------------- LIV
-					System.out.println("Peça bloqueada");
+					System.out.println("PeÃ§a bloqueada");
 					//Tabuleiro.imprime();
 					break;
 				}
@@ -377,11 +377,11 @@ public class Controlador implements MouseListener{
 
 		System.out.println("PROMOVE PEAO");
 
-		tipo= (String)JOptionPane.showInputDialog( //TODO nos requisitos diz que � pra ser jPopMenu mas prefiro assim...
+		tipo= (String)JOptionPane.showInputDialog( //TODO nos requisitos diz que é pra ser jPopMenu mas prefiro assim...
 				Main.janelaJogo,
-				"PROMO��O DO PE�O!!\n"
+				"PROMOÇÃO DO PEÃO!!\n"
 						+ "Escolha o tipo de peca:",
-						"ATEN��O",
+						"ATENÇÃO",
 						JOptionPane.PLAIN_MESSAGE,
 						null, poss,
 						"Rainha");
@@ -389,7 +389,7 @@ public class Controlador implements MouseListener{
 		Tabuleiro.promovePeao(c.peca.pos,tipo);
 	}
 
-	private void promoPeaoJpop (Casa c){ //tentei fazer com Jpop q � como ele quer mas n consegui :(
+	private void promoPeaoJpop (Casa c){ //tentei fazer com Jpop q é como ele quer mas n consegui :(
 		final JPopupMenu popupmenu = new JPopupMenu("Promocao do Peao"); 
 		if(c.peca.tipo != tPecas.peao || (c.peca.time == 'b' && c.peca.pos.y!=0) || (c.peca.time == 'p' && c.peca.pos.y!=7))
 			return;
