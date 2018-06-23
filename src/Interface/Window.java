@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Principal.Controlador;
 import Tabuleiro.*;
@@ -107,28 +108,33 @@ public class Window extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if("novo".equals(e.getActionCommand())) {
 			panel.setVisible(false);
-			Tabuleiro.reinicia();
+			Tabuleiro.inicia();
 			tabuleiro=Tabuleiro.get_Tabuleiro();
 			tab= new DesenhoTabuleiro(tabuleiro);
 			getContentPane().add(tab);
 			this.setJMenuBar(menuBar);
 
 		}else if("carregar".equals(e.getActionCommand())){
-			//TODO carregar
 
 			final JFileChooser fc = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("Text document", "txt");
+		    fc.setFileFilter(filter);
 			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-			int retrival = fc.showSaveDialog(null);
+			
+			int retrival = fc.showOpenDialog(fc);
 			if (retrival == JFileChooser.APPROVE_OPTION) {
 				try {
-					FileReader r = new FileReader(fc.getSelectedFile() + ".txt");
+					FileReader r = new FileReader(fc.getSelectedFile());
 					BufferedReader fr = new BufferedReader(r);
 
-					// LER O ARQUIVO
-					//		        	Carregar(fr);
-					//		        	tab= new DesenhoTabuleiro(tabuleiro);
-					//				getContentPane().add(tab);
-
+					//LER O ARQUIVO
+					panel.setVisible(false);
+					Tabuleiro.inicia(fr);
+					tabuleiro = Tabuleiro.get_Tabuleiro();
+					tab= new DesenhoTabuleiro(tabuleiro);
+					getContentPane().add(tab);
+					this.setJMenuBar(menuBar);
+					
 					fr.close();
 				} catch (Exception ex) {
 					// Error writing game file
