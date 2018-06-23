@@ -21,8 +21,9 @@ public class Controlador implements MouseListener{
 	private Posicao _dest  = new Posicao (0,0);
 	private ObserverTab obsTab;
 	private boolean xeque = false;
-	public JPopupMenu popupmenu;
-	final JFrame f= new JFrame("PopupMenu");  
+	private JPopupMenu popupmenu;
+	private JPopupMenu popupmenuPromo;
+	//final JFrame f= new JFrame("PopupMenu");  
 
 	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que estao dentro dela, se houver
 		//int x,y;
@@ -274,7 +275,8 @@ public class Controlador implements MouseListener{
 
 					//Tabuleiro.imprime();
 					verifica_xeque(_destino);
-					promoPeao(_destino); //PROMOCAO PEAO
+					promoPeaoJpop(_destino); //PROMOCAO PEAO
+					popupmenuPromo.show(Main.janelaJogo, c.getX(), c.getY()); 
 					Tabuleiro.vezBranco = !Tabuleiro.vezBranco;	
 					break;
 				case ataque:
@@ -295,8 +297,9 @@ public class Controlador implements MouseListener{
 
 
 					Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
-					promoPeao(_destino); //PROMOCAO PEAO
-
+					promoPeaoJpop(_destino); //PROMOCAO PEAO
+					popupmenuPromo.show(Main.janelaJogo, c.getX(), c.getY()); 
+					
 					//Tabuleiro.imprime();
 					verifica_xeque(_destino);
 
@@ -304,7 +307,7 @@ public class Controlador implements MouseListener{
 					break;
 				case bloqueado:
 					//MOSTRAR UM ALERT DIZENDO QUE A PECA TA BLOQUEADA <--------------------------- LIV
-					System.out.println("PeÃ§a bloqueada");
+					System.out.println("Peça bloqueada");
 					//Tabuleiro.imprime();
 					break;
 				}
@@ -379,82 +382,45 @@ public class Controlador implements MouseListener{
 		return false;
 	}
 
-
-
-
-	private void promoPeao (Casa c) {
-		String poss[]= {"Rainha","Torre", "Bispo", "Cavalo"};
-		String tipo;
-
-		if(c.peca.tipo != tPecas.peao || (c.peca.time == 'b' && c.peca.pos.y!=0) || (c.peca.time == 'p' && c.peca.pos.y!=7))
-			return;
-
-		System.out.println("PROMOVE PEAO");
-
-		tipo= (String)JOptionPane.showInputDialog( //TODO nos requisitos diz que é pra ser jPopMenu mas prefiro assim...
-				Main.janelaJogo,
-				"PROMOÇÃO DO PEÃO!!\n"
-						+ "Escolha o tipo de peca:",
-						"ATENÇÃO",
-						JOptionPane.PLAIN_MESSAGE,
-						null, poss,
-				"Rainha");
-
-		Tabuleiro.promovePeao(c.peca.pos,tipo);
-	}
-
 	private void promoPeaoJpop (Casa c){ //tentei fazer com Jpop q é como ele quer mas n consegui :(
-		final JPopupMenu popupmenu = new JPopupMenu("Promocao do Peao"); 
+		popupmenuPromo= new JPopupMenu(); 
+		JMenuItem item;
+		
 		if(c.peca.tipo != tPecas.peao || (c.peca.time == 'b' && c.peca.pos.y!=0) || (c.peca.time == 'p' && c.peca.pos.y!=7))
 			return;
 
-		JMenuItem rainha = new JMenuItem("Rainha");
-		rainha.setActionCommand("Rainha");
-
-		JMenuItem torre = new JMenuItem("Torre");
-		torre.setActionCommand("Torre");
-
-		JMenuItem bispo= new JMenuItem("Bispo");
-		bispo.setActionCommand("Bispo");
-
-		JMenuItem cavalo = new JMenuItem("Cavalo");
-		cavalo.setActionCommand("Cavalo");
-
-		popupmenu.add(rainha); 
-		popupmenu.add(torre); 
-		popupmenu.add(bispo);
-		popupmenu.add(cavalo);
-
-		Main.janelaJogo.addMouseListener(new MouseAdapter() {  
-			public void mouseClicked(MouseEvent e) {              
-				popupmenu.show(Main.janelaJogo, e.getX(), e.getY());  
-			}                 
-		});  
-
-		rainha.addActionListener(new ActionListener(){  
+		popupmenuPromo.add(item = new JMenuItem("Rainha"));
+		item.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent e) {              
 				Tabuleiro.promovePeao(c.peca.pos,"Rainha");
+				repaintTabuleiro();
 			}  
 		});
-		torre.addActionListener(new ActionListener(){  
+		
+		popupmenuPromo.add(item = new JMenuItem("Torre"));
+		item.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent e) {              
 				Tabuleiro.promovePeao(c.peca.pos,"Torre");
+				repaintTabuleiro();
 			}  
 		});
-		bispo.addActionListener(new ActionListener(){  
+		
+		popupmenuPromo.add(item = new JMenuItem("Bispo"));
+		item.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent e) {              
 				Tabuleiro.promovePeao(c.peca.pos,"Bispo");
+				repaintTabuleiro();
 			}  
 		});
-		cavalo.addActionListener(new ActionListener(){  
+		
+		popupmenuPromo.add(item = new JMenuItem("Cavalo"));
+		item.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent e) {              
 				Tabuleiro.promovePeao(c.peca.pos,"Cavalo");
+				repaintTabuleiro();
 			}  
 		});
 
-		Main.janelaJogo.add(popupmenu);   
-		Main.janelaJogo.setLayout(null);  
-		Main.janelaJogo.setVisible(true);  
 	}
 
 
