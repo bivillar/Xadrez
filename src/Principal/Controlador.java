@@ -144,7 +144,7 @@ public class Controlador implements MouseListener{
 					FileWriter w = new FileWriter(fc.getSelectedFile() + ".txt", false);
 					BufferedWriter fw = new BufferedWriter(w);
 					// COLOCAR O QUE SALVAR 
-					//Salvar(fw);
+					Tabuleiro.Salvar(fw);
 					fw.close();
 				}
 				catch (Exception ex) {
