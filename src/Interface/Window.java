@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -20,7 +22,7 @@ import Tabuleiro.*;
 
 public class Window extends JFrame implements ActionListener{
 	public final int LARG_DEFAULT=560;
-	public final int ALT_DEFAULT=600;
+	public final int ALT_DEFAULT=580;
 	public static DesenhoTabuleiro tab;
 	private static JPanel panel;
 	private JButton novo,carregar;
@@ -31,23 +33,25 @@ public class Window extends JFrame implements ActionListener{
 	JMenuItem menuItem, menuItem1;
 	JMenu menu;
 	Tabuleiro t = new Tabuleiro();
+	public JPopupMenu popupmenu;
+	final JFrame f= new JFrame("PopupMenu");   
 
 	public Window() {
-
-		menuBar = new JMenuBar();
-		menu = new JMenu("Opções");
-		menu.getAccessibleContext().setAccessibleDescription("Menu");
-		menuBar.add(menu);
-
-		menuItem = new JMenuItem("Salvar");
-		menuItem.addActionListener(this);
-		menuItem.setActionCommand("salvar");
-		menu.add(menuItem);
-
-		menuItem1 = new JMenuItem("Novo Jogo");
-		menuItem1.addActionListener(this);
-		menuItem1.setActionCommand("reiniciar");
-		menu.add(menuItem1);
+		
+		//		menuBar = new JMenuBar();
+		//		menu = new JMenu("Opções");
+		//		menu.getAccessibleContext().setAccessibleDescription("Menu");
+		//		menuBar.add(menu);
+		//
+		//		menuItem = new JMenuItem("Salvar");
+		//		menuItem.addActionListener(this);
+		//		menuItem.setActionCommand("salvar");
+		//		menu.add(menuItem);
+		//
+		//		menuItem1 = new JMenuItem("Novo Jogo");
+		//		menuItem1.addActionListener(this);
+		//		menuItem1.setActionCommand("reiniciar");
+		//		menu.add(menuItem1);
 
 
 		panel = new JPanel();
@@ -88,21 +92,18 @@ public class Window extends JFrame implements ActionListener{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		setTitle("Xadrez");
-		//getContentPane().add(tab);
 
-
+		
 		panel.setPreferredSize(new Dimension(100, 100));
 		panel.add(novo);
 		panel.add(carregar);
-		panel.setAlignmentY(CENTER_ALIGNMENT);
 		getContentPane().add(panel, BorderLayout.CENTER);
-
 	}
-	
-	public static void xequeMate(){
+
+	public static void novo(){
 		panel.setVisible(true);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if("novo".equals(e.getActionCommand())) {
@@ -111,7 +112,7 @@ public class Window extends JFrame implements ActionListener{
 			tabuleiro=Tabuleiro.get_Tabuleiro();
 			tab= new DesenhoTabuleiro(tabuleiro);
 			getContentPane().add(tab);
-			this.setJMenuBar(menuBar);
+			
 
 		}else if("carregar".equals(e.getActionCommand())){
 
@@ -125,7 +126,7 @@ public class Window extends JFrame implements ActionListener{
 				try {
 					FileReader r = new FileReader(fc.getSelectedFile());
 					BufferedReader fr = new BufferedReader(r);
-					
+
 					panel.setVisible(false);
 					Tabuleiro.inicia(fr);
 					tabuleiro = Tabuleiro.get_Tabuleiro();
@@ -138,30 +139,7 @@ public class Window extends JFrame implements ActionListener{
 					ex.printStackTrace();
 				}
 			}
-		}else if("salvar".equals(e.getActionCommand())) {
-
-			final JFileChooser fc = new JFileChooser();
-			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-			int retrival = fc.showSaveDialog(null);
-			if (retrival == JFileChooser.APPROVE_OPTION) {
-				try {
-					FileWriter w = new FileWriter(fc.getSelectedFile() + ".txt", false);
-					BufferedWriter fw = new BufferedWriter(w);
-
-					// COLOCAR O QUE SALVAR 
-					Tabuleiro.Salvar(fw);
-
-					fw.close();
-				} catch (Exception ex) {
-					// Error writing game file
-					ex.printStackTrace();
-				}
-
-			}
-		}else if("reiniciar".equals(e.getActionCommand())) {
-			getContentPane().remove(tab);
-			panel.setVisible(true);
-		}	
+		}
 
 	}
 

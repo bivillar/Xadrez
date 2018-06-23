@@ -21,17 +21,19 @@ public class Controlador implements MouseListener{
 	private Posicao _dest  = new Posicao (0,0);
 	private ObserverTab obsTab;
 	private boolean xeque = false;
+	public JPopupMenu popupmenu;
+	final JFrame f= new JFrame("PopupMenu");  
 
 	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que estao dentro dela, se houver
 		//int x,y;
 
-		if(pos.x>560 || pos.y>600) {
+		if(pos.x>560 || pos.y>580) {
 			System.out.println("Fora do tab");
 			return null;
 		}
 		else {
 			pos.x = (int) pos.x/70;
-			pos.y = (int) (pos.y-46)/70; //46 por causa do menu
+			pos.y = (int) (pos.y-23)/70;
 			return tab[pos.x][pos.y];
 		}
 	}
@@ -126,36 +128,52 @@ public class Controlador implements MouseListener{
 				_tabuleiro[x][y].movT='0';
 			}
 		}
-		
+
 		//obsTab.notify();
 		Main.janelaJogo.tab.repaint();
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent c) {	
-		
+		popupmenu = new JPopupMenu();
+		JMenuItem item;
+		popupmenu.add(item = new JMenuItem("Salvar"));
+
+		item.addActionListener(new ActionListener(){  
+			public void actionPerformed(ActionEvent e) {              
+				final JFileChooser fc = new JFileChooser();
+				fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+				int retrival = fc.showSaveDialog(null);
+				if (retrival == JFileChooser.APPROVE_OPTION) {
+					try {
+						FileWriter w = new FileWriter(fc.getSelectedFile() + ".txt", false);
+						BufferedWriter fw = new BufferedWriter(w);
+						// COLOCAR O QUE SALVAR 
+						Tabuleiro.Salvar(fw);
+						fw.close();
+					}
+					catch (Exception ex) {
+						// Error writing game file
+						ex.printStackTrace();
+					}
+				} 
+			}  
+		});  
+
+		popupmenu.add(item = new JMenuItem("Novo Jogo"));
+		item.addActionListener(new ActionListener(){  
+			public void actionPerformed(ActionEvent e) {              
+				Window.novo();
+			}  
+		});  
+
+
 		if(SwingUtilities.isRightMouseButton(c)) {
-			System.out.println("Right Worked");
-			final JFileChooser fc = new JFileChooser();
-			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-			int retrival = fc.showSaveDialog(null);
-			if (retrival == JFileChooser.APPROVE_OPTION) {
-				try {
-					FileWriter w = new FileWriter(fc.getSelectedFile() + ".txt", false);
-					BufferedWriter fw = new BufferedWriter(w);
-					// COLOCAR O QUE SALVAR 
-					Tabuleiro.Salvar(fw);
-					fw.close();
-				}
-				catch (Exception ex) {
-					// Error writing game file
-					ex.printStackTrace();
-				}
-			}
+			popupmenu.show(Main.janelaJogo , c.getX(), c.getY());  
 		}
-		
-		
-		
+
+		//System.out.println("x:"+c.getX()+" y:"+c.getY());
+
 		_tabuleiro = Tabuleiro.get_Tabuleiro();
 		_jogadas = Tabuleiro.get_Jogadas();
 		String time="";
@@ -232,7 +250,7 @@ public class Controlador implements MouseListener{
 					if(xeque)
 						xeque = false;
 					System.out.println("Caminho Livre");
-					
+
 					Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
 
 					//Tabuleiro.imprime();
@@ -255,14 +273,14 @@ public class Controlador implements MouseListener{
 								"Aviso",
 								JOptionPane.PLAIN_MESSAGE);
 					}
-					
-					
+
+
 					Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
 					promoPeao(_destino); //PROMOCAO PEAO
 
 					//Tabuleiro.imprime();
 					verifica_xeque(_destino);
-					
+
 					Tabuleiro.vezBranco = !Tabuleiro.vezBranco;
 					break;
 				case bloqueado:
@@ -319,7 +337,7 @@ public class Controlador implements MouseListener{
 							"XEQUE-MATE!!\n VITORIA DO TIME: "+time,
 							"Aviso",
 							JOptionPane.WARNING_MESSAGE);
-					Window.xequeMate();
+					Window.novo();
 				}
 			}
 		}				
@@ -361,7 +379,7 @@ public class Controlador implements MouseListener{
 						"ATENÇÃO",
 						JOptionPane.PLAIN_MESSAGE,
 						null, poss,
-						"Rainha");
+				"Rainha");
 
 		Tabuleiro.promovePeao(c.peca.pos,tipo);
 	}
@@ -393,38 +411,38 @@ public class Controlador implements MouseListener{
 				popupmenu.show(Main.janelaJogo, e.getX(), e.getY());  
 			}                 
 		});  
-		
+
 		rainha.addActionListener(new ActionListener(){  
-	         public void actionPerformed(ActionEvent e) {              
-	        	 Tabuleiro.promovePeao(c.peca.pos,"Rainha");
-	        }  
-	    });
+			public void actionPerformed(ActionEvent e) {              
+				Tabuleiro.promovePeao(c.peca.pos,"Rainha");
+			}  
+		});
 		torre.addActionListener(new ActionListener(){  
-	         public void actionPerformed(ActionEvent e) {              
-	        	 Tabuleiro.promovePeao(c.peca.pos,"Torre");
-	        }  
-	    });
+			public void actionPerformed(ActionEvent e) {              
+				Tabuleiro.promovePeao(c.peca.pos,"Torre");
+			}  
+		});
 		bispo.addActionListener(new ActionListener(){  
-	         public void actionPerformed(ActionEvent e) {              
-	        	 Tabuleiro.promovePeao(c.peca.pos,"Bispo");
-	        }  
-	    });
+			public void actionPerformed(ActionEvent e) {              
+				Tabuleiro.promovePeao(c.peca.pos,"Bispo");
+			}  
+		});
 		cavalo.addActionListener(new ActionListener(){  
-	         public void actionPerformed(ActionEvent e) {              
-	        	 Tabuleiro.promovePeao(c.peca.pos,"Cavalo");
-	        }  
-	    });
-		
+			public void actionPerformed(ActionEvent e) {              
+				Tabuleiro.promovePeao(c.peca.pos,"Cavalo");
+			}  
+		});
+
 		Main.janelaJogo.add(popupmenu);   
 		Main.janelaJogo.setLayout(null);  
 		Main.janelaJogo.setVisible(true);  
 	}
 
-	
-	
-	
-	
-	
+
+
+
+
+
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
