@@ -12,9 +12,6 @@ import Interface.*;
 
 import javax.swing.*;
 
-
-
-
 public class Controlador implements MouseListener{
 	private Casa _tabuleiro[][];
 	private movimento _jogadas[][];
@@ -34,7 +31,7 @@ public class Controlador implements MouseListener{
 		}
 		else {
 			pos.x = (int) pos.x/70;
-			pos.y = (int) (pos.y-22)/70;
+			pos.y = (int) (pos.y-46)/70; //46 por causa do menu
 			return tab[pos.x][pos.y];
 		}
 	}
@@ -192,7 +189,6 @@ public class Controlador implements MouseListener{
 			}
 		}
 			
-		
 		
 		_tabuleiro = Tabuleiro.get_Tabuleiro();
 		_jogadas = Tabuleiro.get_Jogadas();
