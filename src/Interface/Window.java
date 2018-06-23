@@ -107,8 +107,8 @@ public class Window extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if("novo".equals(e.getActionCommand())) {
 			panel.setVisible(false);
-			t.reinicia();
-			tabuleiro=t.get_Tabuleiro();
+			Tabuleiro.reinicia();
+			tabuleiro=Tabuleiro.get_Tabuleiro();
 			tab= new DesenhoTabuleiro(tabuleiro);
 			getContentPane().add(tab);
 			this.setJMenuBar(menuBar);
