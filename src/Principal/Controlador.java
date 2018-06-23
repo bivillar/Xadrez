@@ -171,8 +171,27 @@ public class Controlador implements MouseListener{
 		if(SwingUtilities.isRightMouseButton(c)) {
 			popupmenu.show(Main.janelaJogo , c.getX(), c.getY());  
 		}
+		
+		//se for pra subir direto, comentar linhas aqui em cima e descomentar as abaixo
 
-		//System.out.println("x:"+c.getX()+" y:"+c.getY());
+//		if(SwingUtilities.isRightMouseButton(c)) {
+//			final JFileChooser fc = new JFileChooser();
+//			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+//			int retrival = fc.showSaveDialog(null);
+//			if (retrival == JFileChooser.APPROVE_OPTION) {
+//				try {
+//					FileWriter w = new FileWriter(fc.getSelectedFile() + ".txt", false);
+//					BufferedWriter fw = new BufferedWriter(w);
+//					// COLOCAR O QUE SALVAR 
+//					Tabuleiro.Salvar(fw);
+//					fw.close();
+//				}
+//				catch (Exception ex) {
+//					// Error writing game file
+//					ex.printStackTrace();
+//				}
+//			} 
+//		}
 
 		_tabuleiro = Tabuleiro.get_Tabuleiro();
 		_jogadas = Tabuleiro.get_Jogadas();
