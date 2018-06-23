@@ -19,12 +19,10 @@ import Principal.Controlador;
 import Tabuleiro.*;
 
 public class Window extends JFrame implements ActionListener{
-
-	//	protected JButton novo, carregar;
 	public final int LARG_DEFAULT=560;
 	public final int ALT_DEFAULT=600;
-	public DesenhoTabuleiro tab;
-	private JPanel panel;
+	public static DesenhoTabuleiro tab;
+	private static JPanel panel;
 	private JButton novo,carregar;
 	private JLabel l;
 	private Image img;
@@ -36,10 +34,7 @@ public class Window extends JFrame implements ActionListener{
 
 	public Window() {
 
-		//Create the menu bar.
 		menuBar = new JMenuBar();
-
-		//Build the first menu.
 		menu = new JMenu("Opções");
 		menu.getAccessibleContext().setAccessibleDescription("Menu");
 		menuBar.add(menu);
@@ -103,7 +98,11 @@ public class Window extends JFrame implements ActionListener{
 		getContentPane().add(panel, BorderLayout.CENTER);
 
 	}
-
+	
+	public static void xequeMate(){
+		panel.setVisible(true);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if("novo".equals(e.getActionCommand())) {
