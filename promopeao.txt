@@ -1,0 +1,9 @@
+true
+Pt Vz Pb Pq Pk Pb Pc Pt 
+Pp Bp Vz Pp Pp Pp Pp Pp 
+Vz Vz Vz Vz Vz Vz Vz Vz 
+Vz Vz Pp Vz Vz Vz Vz Vz 
+Vz Vz Vz Pc Vz Vz Vz Vz 
+Vz Vz Vz Vz Vz Vz Vz Vz 
+Vz Bp Bp Bp Bp Bp Bp Bp 
+Bt Bc Bb Bq Bk Bb Bc Bt 
