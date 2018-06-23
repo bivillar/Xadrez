@@ -319,7 +319,7 @@ public class Controlador implements MouseListener{
 							"XEQUE-MATE!!\n VITORIA DO TIME: "+time,
 							"Aviso",
 							JOptionPane.WARNING_MESSAGE);
-					System.out.println("XEQUE-MATE!!");
+					Window.xequeMate();
 				}
 			}
 		}				
