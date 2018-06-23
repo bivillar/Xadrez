@@ -61,7 +61,13 @@ public class Rei extends PECA{
 		
 		//ROQUE
 		if(qtd_mov == 0) {
+			loop:
 			for(int X=pos.x-1;X>=0;X--) {
+				for(x=0;x<8;x++)
+					for(y=0;y<8;y++)
+						if((jogadas[x+8*y][X+8*pos.y]==movimento.valido || jogadas[x+8*y][X+8*pos.y]==movimento.ataque_valido) && casas[x][y].peca.time!=time)
+							break loop;
+			
 				if(!casas[X][pos.y].vazia()) {
 					if(casas[X][pos.y].peca.tipo == tPecas.torre && casas[X][pos.y].peca.qtd_mov==0)
 						movs[X+8*pos.y] = movimento.valido;
@@ -69,7 +75,12 @@ public class Rei extends PECA{
 				}
 			}
 		
+			loop:
 			for(int X=pos.x+1;X<8;X++) {
+				for(x=0;x<8;x++)
+					for(y=0;y<8;y++)
+						if((jogadas[x+8*y][X+8*pos.y]==movimento.valido || jogadas[x+8*y][X+8*pos.y]==movimento.ataque_valido) && casas[x][y].peca.time!=time)
+							break loop;
 				if(!casas[X][pos.y].vazia()) {
 					if(casas[X][pos.y].peca.tipo == tPecas.torre && casas[X][pos.y].peca.qtd_mov==0)
 						movs[X+8*pos.y] = movimento.valido;

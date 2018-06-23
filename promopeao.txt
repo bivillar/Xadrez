@@ -1,9 +1,9 @@
 true
-Pt Vz Pb Pq Pk Pb Pc Pt 
-Pp Bp Vz Pp Pp Pp Pp Pp 
-Vz Vz Vz Vz Vz Vz Vz Vz 
-Vz Vz Pp Vz Vz Vz Vz Vz 
-Vz Vz Vz Pc Vz Vz Vz Vz 
-Vz Vz Vz Vz Vz Vz Vz Vz 
-Vz Bp Bp Bp Bp Bp Bp Bp 
-Bt Bc Bb Bq Bk Bb Bc Bt 
+Pt0 Vz0 Pb0 Pq0 Pk0 Pb0 Pc0 Pt0 
+Vz0 Bp1 Pp0 Vz0 Pp0 Pp0 Pp0 Pp0 
+Pp1 Vz0 Pc1 Pp1 Vz0 Vz0 Vz0 Vz0 
+Vz0 Vz0 Vz0 Vz0 Vz0 Vz0 Vz0 Vz0 
+Vz0 Vz0 Vz0 Vz0 Vz0 Vz0 Vz0 Vz0 
+Vz0 Vz0 Vz0 Vz0 Vz0 Vz0 Vz0 Vz0 
+Bp0 Bp0 Vz0 Bp0 Bp0 Bp0 Bp0 Bp0 
+Bt0 Bc0 Bb0 Bq0 Bk0 Bb0 Bc0 Bt0 

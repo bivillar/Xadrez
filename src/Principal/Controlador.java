@@ -20,11 +20,12 @@ public class Controlador implements MouseListener{
 	private Posicao _pos = new Posicao (0,0);
 	private Posicao _dest  = new Posicao (0,0);
 	private ObserverTab obsTab;
+	private boolean xeque = false;
 
 	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que estao dentro dela, se houver
 		//int x,y;
 
-		if(pos.x>560 || pos.y>582) {
+		if(pos.x>560 || pos.y>600) {
 			System.out.println("Fora do tab");
 			return null;
 		}
@@ -167,7 +168,7 @@ public class Controlador implements MouseListener{
 
 			}else if(!_destino.vazia() && _destino.peca.time == _origem.peca.time) {
 				if(_destino.peca.tipo == tPecas.torre && _origem.peca.tipo == tPecas.rei) {
-					if(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y] == movimento.valido) {
+					if(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y] == movimento.valido && !xeque) {
 						//ROQUE
 
 						Posicao nRei = new Posicao();
@@ -205,6 +206,8 @@ public class Controlador implements MouseListener{
 					//Tabuleiro.imprime();
 					break;
 				case valido:
+					if(xeque)
+						xeque = false;
 					System.out.println("Caminho Livre");
 					
 					Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
@@ -215,6 +218,8 @@ public class Controlador implements MouseListener{
 					Tabuleiro.vezBranco = !Tabuleiro.vezBranco;	
 					break;
 				case ataque:
+					if(xeque)
+						xeque = false;
 					System.out.println("ATAQUE!");
 					if(_destino.peca.tipo == tPecas.rei) {
 						if(_destino.peca.time == 'b')
@@ -271,6 +276,7 @@ public class Controlador implements MouseListener{
 
 								System.out.println("XEQUE!!");
 								Tabuleiro.xeque(c.peca.pos, new Posicao(x,y));
+								xeque = true;
 								return;
 							}
 							else if(_jogadas[X+8*Y][c.peca.pos.x+c.peca.pos.y*8] == movimento.ataque || (_jogadas[X+8*Y][c.peca.pos.x+c.peca.pos.y*8] == movimento.ataque_valido && _tabuleiro[X][Y].peca.time != c.peca.time)){
@@ -281,6 +287,7 @@ public class Controlador implements MouseListener{
 
 								System.out.println("XEQUE!!");
 								Tabuleiro.xeque(c.peca.pos, new Posicao(x,y));
+								xeque = true;
 								return;
 							}
 						}

@@ -109,7 +109,7 @@ public class Tabuleiro {
 		}
 
 		for(int y=0; (line = bufferedReader.readLine()) != null ;y++) {
-			for(int x=0,i=0;i<24;i+=2) {
+			for(int x=0,i=0;i<32;i+=2) {
 				if(line.charAt(i)=='P') {
 					time = 'p';
 				}else {
@@ -134,6 +134,10 @@ public class Tabuleiro {
 				case 'p':
 					_casa[x][y].peca = (Peao) new Peao(time,new Posicao(x,y));
 					break;
+				}
+				i++;
+				if(!_casa[x][y].vazia()) {
+					_casa[x][y].peca.qtd_mov=Integer.parseInt(String.valueOf(line.charAt(i)));
 				}
 				x++;
 			}
@@ -207,7 +211,7 @@ public class Tabuleiro {
 
 	public static void Salvar(BufferedWriter fileWriter) {
 		PECA p;
-		String aux2="";
+		String aux2="",aux3="";
 
 		try {
 			fileWriter.write(String.valueOf(vezBranco));
@@ -217,34 +221,39 @@ public class Tabuleiro {
 				for(int j=0; j<8;j++){
 					String aux="";
 					p=_casa[j][i].peca;
-					aux2="Vz ";
+					aux2="Vz0 ";
 					if (p != null){
 						switch(p.tipo){
 						case peao:
-							aux = "p ";
+							aux = "p";
 							break;
 						case torre:
-							aux = "t ";
+							aux = "t";
 							break;
 						case cavalo:
-							aux = "c ";
+							aux = "c";
 							break;
 						case bispo:
-							aux = "b ";
+							aux = "b";
 							break;
 						case rainha:
-							aux = "q ";
+							aux = "q";
 							break;
 						case rei:
-							aux = "k ";
+							aux = "k";
 							break;
 						}
 
+						if(p.qtd_mov>0)
+							aux3="1";
+						else
+							aux3="0";
+						
 						if(p.time=='b') {
-							aux2="B"+aux;
+							aux2="B"+aux+aux3+' ';
 						}
 						else {
-							aux2="P"+aux;
+							aux2="P"+aux+aux3+' ';
 						}
 					}
 					fileWriter.write(aux2);
