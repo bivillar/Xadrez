@@ -3,6 +3,7 @@ package Interface;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -27,10 +28,25 @@ public class Window extends JFrame implements ActionListener{
     private JLabel l;
     private Image img;
     private Casa[][] tabuleiro;
+    JMenuBar menuBar;
+    JMenuItem menuItem;
+    JMenu menu, submenu;
     
     public Window(Casa t[][]) {
+    	
+    		//Create the menu bar.
+        menuBar = new JMenuBar();
         
-    	tabuleiro=t;
+        //Build the first menu.
+        menu = new JMenu("Jogo");
+        menu.getAccessibleContext().setAccessibleDescription("Menu");
+        menuBar.add(menu);
+        
+        menuItem = new JMenuItem("Salvar");
+        menuItem.addActionListener(this);
+        menu.add(menuItem);
+        
+    		tabuleiro=t;
         
         panel = new JPanel();
         try {
@@ -86,7 +102,7 @@ public class Window extends JFrame implements ActionListener{
 			panel.setVisible(false);
 			tab= new DesenhoTabuleiro(tabuleiro);
 			getContentPane().add(tab);
-			
+			this.setJMenuBar(menuBar);
 			
 		}else {
 			//TODO carregar
