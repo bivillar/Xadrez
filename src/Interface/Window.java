@@ -44,6 +44,7 @@ public class Window extends JFrame implements ActionListener{
         
         menuItem = new JMenuItem("Salvar");
         menuItem.addActionListener(this);
+        menuItem.setActionCommand("salvar");
         menu.add(menuItem);
         
     		tabuleiro=t;
@@ -104,7 +105,7 @@ public class Window extends JFrame implements ActionListener{
 			getContentPane().add(tab);
 			this.setJMenuBar(menuBar);
 			
-		}else {
+		}else if("carregar".equals(e.getActionCommand())){
 			//TODO carregar
 			
 			final JFileChooser fc = new JFileChooser();
@@ -126,7 +127,8 @@ public class Window extends JFrame implements ActionListener{
 		            ex.printStackTrace();
 		        }
 			}
-			
+		}else if("salvar".equals(e.getActionCommand())) {
+			final JFileChooser fc1 = new JFileChooser();
 		}	
 	}
     
