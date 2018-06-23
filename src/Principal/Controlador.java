@@ -132,7 +132,30 @@ public class Controlador implements MouseListener{
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent c) {			
+	public void mouseClicked(MouseEvent c) {	
+		
+		if(SwingUtilities.isRightMouseButton(c)) {
+			System.out.println("Right Worked");
+			final JFileChooser fc = new JFileChooser();
+			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+			int retrival = fc.showSaveDialog(null);
+			if (retrival == JFileChooser.APPROVE_OPTION) {
+				try {
+					FileWriter w = new FileWriter(fc.getSelectedFile() + ".txt", false);
+					BufferedWriter fw = new BufferedWriter(w);
+					// COLOCAR O QUE SALVAR 
+					//Salvar(fw);
+					fw.close();
+				}
+				catch (Exception ex) {
+					// Error writing game file
+					ex.printStackTrace();
+				}
+			}
+		}
+		
+		
+		
 		_tabuleiro = Tabuleiro.get_Tabuleiro();
 		_jogadas = Tabuleiro.get_Jogadas();
 		String time="";
