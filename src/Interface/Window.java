@@ -34,7 +34,7 @@ public class Window extends JFrame implements ActionListener{
 	JMenu menu;
 	Tabuleiro t = new Tabuleiro();
 	public JPopupMenu popupmenu;
-	final JFrame f= new JFrame("PopupMenu");   
+	final JFrame f= new JFrame("PopupMenu");  
 
 	public Window() {
 		
@@ -100,7 +100,8 @@ public class Window extends JFrame implements ActionListener{
 		getContentPane().add(panel, BorderLayout.CENTER);
 	}
 
-	public static void novo(){
+	public void novo(){
+		getContentPane().remove(tab);
 		panel.setVisible(true);
 	}
 

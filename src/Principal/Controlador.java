@@ -163,7 +163,7 @@ public class Controlador implements MouseListener{
 		popupmenu.add(item = new JMenuItem("Novo Jogo"));
 		item.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent e) {              
-				Window.novo();
+				Main.janelaJogo.novo();
 			}  
 		});  
 
@@ -356,7 +356,7 @@ public class Controlador implements MouseListener{
 							"XEQUE-MATE!!\n VITORIA DO TIME: "+time,
 							"Aviso",
 							JOptionPane.WARNING_MESSAGE);
-					Window.novo();
+					Main.janelaJogo.novo();
 				}
 			}
 		}				
