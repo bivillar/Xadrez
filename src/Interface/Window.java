@@ -118,26 +118,24 @@ public class Window extends JFrame implements ActionListener{
 
 			final JFileChooser fc = new JFileChooser();
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("Text document", "txt");
-		    fc.setFileFilter(filter);
+			fc.setFileFilter(filter);
 			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-			
+
 			int retrival = fc.showOpenDialog(fc);
 			if (retrival == JFileChooser.APPROVE_OPTION) {
 				try {
 					FileReader r = new FileReader(fc.getSelectedFile());
 					BufferedReader fr = new BufferedReader(r);
-
-					//LER O ARQUIVO
+					
 					panel.setVisible(false);
 					Tabuleiro.inicia(fr);
 					tabuleiro = Tabuleiro.get_Tabuleiro();
 					tab= new DesenhoTabuleiro(tabuleiro);
 					getContentPane().add(tab);
 					this.setJMenuBar(menuBar);
-					
+
 					fr.close();
 				} catch (Exception ex) {
-					// Error writing game file
 					ex.printStackTrace();
 				}
 			}

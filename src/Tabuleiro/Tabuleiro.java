@@ -30,6 +30,7 @@ public class Tabuleiro {
 	}
 
 	public static void inicia() {
+		vezBranco = true;
 		for (int y=0;y<8;y++) {
 			for(int x=0;x<8;x++) {
 				if(y%2 == 0) {

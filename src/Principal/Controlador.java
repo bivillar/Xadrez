@@ -264,7 +264,16 @@ public class Controlador implements MouseListener{
 					for(int X=0;X<8;X++) {
 						for(int Y=0;Y<8;Y++) {
 							if(_jogadas[x+8*y][X+8*Y] == movimento.ataque || _jogadas[x+8*y][X+8*Y] == movimento.ataque_valido || _jogadas[x+8*y][X+8*Y] == movimento.valido) {
+								JOptionPane.showMessageDialog(Main.janelaJogo,
+										"XEQUE PELO TIME "+time,
+										"Aviso",
+										JOptionPane.WARNING_MESSAGE);
 
+								System.out.println("XEQUE!!");
+								Tabuleiro.xeque(c.peca.pos, new Posicao(x,y));
+								return;
+							}
+							else if(_jogadas[X+8*Y][c.peca.pos.x+c.peca.pos.y*8] == movimento.ataque || (_jogadas[X+8*Y][c.peca.pos.x+c.peca.pos.y*8] == movimento.ataque_valido && _tabuleiro[X][Y].peca.time != c.peca.time)){
 								JOptionPane.showMessageDialog(Main.janelaJogo,
 										"XEQUE PELO TIME "+time,
 										"Aviso",
