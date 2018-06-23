@@ -2,26 +2,27 @@ package Tabuleiro;
 
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 
 import Pecas.*;
 
 public class Tabuleiro {
 	private static Casa _casa[][] = new Casa[8][8];
 	private static movimento _jogadas[][] = new movimento[64][64];
-	
-	
+	public static boolean vezBranco = true;
+
 	public Tabuleiro () {
 		reinicia();
 	}
-	
+
 	public static Casa[][] get_Tabuleiro (){
 		return _casa;
 	}
-	
+
 	public static movimento[][] get_Jogadas (){
 		return _jogadas;
 	}
-	
+
 	public static void reinicia() {
 		for (int y=0;y<8;y++) {
 			for(int x=0;x<8;x++) {
@@ -35,7 +36,7 @@ public class Tabuleiro {
 				}
 			}
 		}
-		
+
 		_casa[0][0].peca = (Torre) new Torre('p',new Posicao());		
 		_casa[1][0].peca = (Cavalo) new Cavalo('p',new Posicao(1,0));
 		_casa[2][0].peca = (Bispo) new Bispo('p',new Posicao(2,0));
@@ -44,7 +45,7 @@ public class Tabuleiro {
 		_casa[5][0].peca = (Bispo) new Bispo('p',new Posicao(5,0));
 		_casa[6][0].peca = (Cavalo) new Cavalo('p',new Posicao(6,0));
 		_casa[7][0].peca = (Torre) new Torre('p',new Posicao(7,0));
-		
+
 		_casa[0][1].peca = (Peao) new Peao('p',new Posicao(0,1));
 		_casa[1][1].peca = (Peao) new Peao('p',new Posicao(1,1));
 		_casa[2][1].peca = (Peao) new Peao('p',new Posicao(2,1));
@@ -53,7 +54,7 @@ public class Tabuleiro {
 		_casa[5][1].peca = (Peao) new Peao('p',new Posicao(5,1));
 		_casa[6][1].peca = (Peao) new Peao('p',new Posicao(6,1));
 		_casa[7][1].peca = (Peao) new Peao('p',new Posicao(7,1));
-		
+
 		_casa[0][7].peca = (Torre) new Torre('b',new Posicao(0,7));
 		_casa[1][7].peca = (Cavalo) new Cavalo('b',new Posicao(1,7));
 		_casa[2][7].peca = (Bispo) new Bispo('b',new Posicao(2,7));
@@ -62,7 +63,7 @@ public class Tabuleiro {
 		_casa[5][7].peca = (Bispo) new Bispo('b',new Posicao(5,7));
 		_casa[6][7].peca = (Cavalo) new Cavalo('b',new Posicao(6,7));
 		_casa[7][7].peca = (Torre) new Torre('b',new Posicao(7,7));
-		
+
 		_casa[0][6].peca = (Peao) new Peao('b',new Posicao(0,6));
 		_casa[1][6].peca = (Peao) new Peao('b',new Posicao(1,6));
 		_casa[2][6].peca = (Peao) new Peao('b',new Posicao(2,6));
@@ -71,10 +72,10 @@ public class Tabuleiro {
 		_casa[5][6].peca = (Peao) new Peao('b',new Posicao(5,6));
 		_casa[6][6].peca = (Peao) new Peao('b',new Posicao(6,6));
 		_casa[7][6].peca = (Peao) new Peao('b',new Posicao(7,6));	
-		
+
 		update_Jogadas();
 	}
-	
+
 	public static void move_peca(Posicao pos, Posicao dest, Casa[][] tab) {
 		tab[dest.x][dest.y].peca = tab[pos.x][pos.y].peca;
 		tab[pos.x][pos.y].peca = null;
@@ -84,14 +85,14 @@ public class Tabuleiro {
 		update_Jogadas();
 	}
 
-	
+
 	public static void update_Jogadas () {	
 		Posicao [] pReis = {new Posicao(), new Posicao()};
 		int i=0;
 		for(int k = 0;k<64;k++)
 			for(int t=0;t<64;t++)
 				_jogadas[t][k]=movimento.invalido;
-		
+
 		for(int y = 0; y<8;y++) {
 			for(int x = 0; x<8;x++ ) {
 				if(!_casa[x][y].vazia()) {
@@ -105,42 +106,102 @@ public class Tabuleiro {
 				}
 			}
 		}
-		
+
 		for(i=0;i<2;i++) //so preencho os reis depois que sei todos os outros
 			_jogadas[pReis[i].x+8*pReis[i].y] = _casa[pReis[i].x][pReis[i].y].peca.mov_valido(_casa);
-		
+
 	}
-	
+
 	public static void xeque(Posicao pos, Posicao rei) {
 		for(int k=0;k<64;k++) {
 			for(int t=0;t<64;t++){
 				if(t != pos.x+8*pos.y && k!= rei.x+8*rei.y) // so deixa manter as jogadas que tiram o xeque
 					_jogadas[k][t] = movimento.invalido;
-				
+
 			}	
 		}
 	}
-	
+
 	public static void promovePeao(Posicao pos, String tipo) {
 		switch(tipo) {
-			case "Rainha":
-				_casa[pos.x][pos.y].peca = (Rainha) new Rainha(_casa[pos.x][pos.y].peca.time,pos);
-				break;
-			case "Torre":
-				_casa[pos.x][pos.y].peca = (Torre) new Torre(_casa[pos.x][pos.y].peca.time,pos);
-				break;
-			case "Bispo":
-				_casa[pos.x][pos.y].peca = (Bispo) new Bispo(_casa[pos.x][pos.y].peca.time,pos);
-				break;
-			case "Cavalo":
-				_casa[pos.x][pos.y].peca = (Cavalo) new Cavalo(_casa[pos.x][pos.y].peca.time,pos);
-				break;
+		case "Rainha":
+			_casa[pos.x][pos.y].peca = (Rainha) new Rainha(_casa[pos.x][pos.y].peca.time,pos);
+			break;
+		case "Torre":
+			_casa[pos.x][pos.y].peca = (Torre) new Torre(_casa[pos.x][pos.y].peca.time,pos);
+			break;
+		case "Bispo":
+			_casa[pos.x][pos.y].peca = (Bispo) new Bispo(_casa[pos.x][pos.y].peca.time,pos);
+			break;
+		case "Cavalo":
+			_casa[pos.x][pos.y].peca = (Cavalo) new Cavalo(_casa[pos.x][pos.y].peca.time,pos);
+			break;
 		}
 	}
-	
-	
-	
-	
+
+	//FAZER
+	public void Carregar(BufferedWriter arqLeitura){
+
+	}
+
+	public static void Salvar(BufferedWriter fileWriter) {
+		PECA p;
+		String aux2="";
+
+		try {
+			fileWriter.write(String.valueOf(vezBranco));
+			fileWriter.newLine();
+
+			for(int i=0; i<8;i++){
+				for(int j=0; j<8;j++){
+					char aux=' ';
+					p=_casa[j][i].peca;
+					aux2=" Vz";
+					if (p != null){
+
+						switch(p.tipo){
+						case peao:
+							aux = 'p';
+							break;
+						case torre:
+							aux = 't';
+							break;
+						case cavalo:
+							aux = 'c';
+							break;
+						case bispo:
+							aux = 'b';
+							break;
+						case rainha:
+							aux = 'q';
+							break;
+						case rei:
+							aux = 'k';
+							break;
+						}
+
+						if(p.time=='b') {
+							aux2=" B"+aux;
+						}
+						else {
+							aux2=" P"+aux;
+						}
+					}
+					fileWriter.write(aux2);
+
+				}
+				fileWriter.newLine();
+			}
+
+
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 	public static void imprime () {
 		char aux=' ';
 		for(int y=0; y<8;y++){
@@ -172,19 +233,19 @@ public class Tabuleiro {
 						aux = 'e';
 						break;
 					}
-					
+
 					if(_casa[x][y].peca.time == 'b')
 						aux = Character.toUpperCase(aux);
-					
+
 					if (_casa[x][y].cor == 'b')
 						System.out.print("|-"+aux+"-|");
 					else
 						System.out.print("|+"+aux+"+|");
 				}
-				
+
 			}
 			System.out.println(" ");
 		}
-		
+
 	}
 }

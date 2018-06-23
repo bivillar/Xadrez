@@ -19,7 +19,6 @@ public class Controlador implements MouseListener{
 	private Casa _destino = null;
 	private Posicao _pos = new Posicao (0,0);
 	private Posicao _dest  = new Posicao (0,0);
-	private static boolean vezBranco = true;
 	private ObserverTab obsTab;
 
 	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que estao dentro dela, se houver
@@ -130,100 +129,9 @@ public class Controlador implements MouseListener{
 		//obsTab.notify();
 		Main.janelaJogo.tab.repaint();
 	}
-
-	
-	//NAO ESTA FUNCIONANDO DIREITO
-	public void Salvar(BufferedWriter fileWriter) {
-		PECA p;
-		String aux2="";
-		
-		try {
-			fileWriter.write(String.valueOf(vezBranco));
-			fileWriter.newLine();
-		
-        	for(int i=0; i<8;i++){
-    			for(int j=0; j<8;j++){
-    				char aux=' ';
-    				p=_tabuleiro[j][i].peca;
-    				aux2=" Vz";
-    				if (p != null){
-    					
-    					switch(p.tipo){
-    					case peao:
-    						aux = 'p';
-    						break;
-    					case torre:
-    						aux = 't';
-    						break;
-    					case cavalo:
-    						aux = 'c';
-    						break;
-    					case bispo:
-    						aux = 'b';
-    						break;
-    					case rainha:
-    						aux = 'q';
-    						break;
-    					case rei:
-    						aux = 'k';
-    						break;
-    					}
-    					
-    					if(p.time=='b') {
-    						aux2=" B"+aux;
-    					}
-    					else {
-    						aux2=" P"+aux;
-    					}
-    				}
-    				fileWriter.write(aux2);
-
-    			}
-    			fileWriter.newLine();
-        	}
-			
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-
-	//FAZER
-	public void Carregar(BufferedWriter arqLeitura){
-		
-	}
-	
 	
 	@Override
-	public void mouseClicked(MouseEvent c) {
-		
-		//Botao direito -> salvar jogo
-		if(SwingUtilities.isRightMouseButton(c)) {
-			System.out.println("Right Worked");
-			
-			final JFileChooser fc = new JFileChooser();
-			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-			int retrival = fc.showSaveDialog(null);
-			if (retrival == JFileChooser.APPROVE_OPTION) {
-		        try {
-		        	FileWriter w = new FileWriter(fc.getSelectedFile() + ".txt", false);
-		        	BufferedWriter fw = new BufferedWriter(w);
-		        	
-		        	// COLOCAR O QUE SALVAR 
-		        	Salvar(fw);
-		        	
-		            fw.close();
-		        } catch (Exception ex) {
-		        	// Error writing game file
-		            ex.printStackTrace();
-		        }
-			}
-		}
-			
-		
+	public void mouseClicked(MouseEvent c) {			
 		_tabuleiro = Tabuleiro.get_Tabuleiro();
 		_jogadas = Tabuleiro.get_Jogadas();
 		String time="";
@@ -239,7 +147,7 @@ public class Controlador implements MouseListener{
 			}else if(_origem.vazia()) { //nao tem peca
 				System.out.println("Casa vazia, Tente outra vez");
 				_origem = null;
-			}else if((vezBranco && _origem.peca.time=='p') || (!vezBranco && _origem.peca.time=='b')) {
+			}else if((Tabuleiro.vezBranco && _origem.peca.time=='p') || (!Tabuleiro.vezBranco && _origem.peca.time=='b')) {
 				System.out.println("Não é sua vez");
 				_origem = null;
 			}
@@ -277,7 +185,7 @@ public class Controlador implements MouseListener{
 						Tabuleiro.move_peca(_dest,nTorre,_tabuleiro);  //bota a torre na casa do lado do rei
 
 
-						vezBranco = !vezBranco;
+						Tabuleiro.vezBranco = !Tabuleiro.vezBranco;
 
 					}
 
@@ -304,7 +212,7 @@ public class Controlador implements MouseListener{
 					//Tabuleiro.imprime();
 					verifica_xeque(_destino);
 					promoPeao(_destino); //PROMOCAO PEAO
-					vezBranco = !vezBranco;	
+					Tabuleiro.vezBranco = !Tabuleiro.vezBranco;	
 					break;
 				case ataque:
 					System.out.println("ATAQUE!");
@@ -327,7 +235,7 @@ public class Controlador implements MouseListener{
 					//Tabuleiro.imprime();
 					verifica_xeque(_destino);
 					
-					vezBranco = !vezBranco;
+					Tabuleiro.vezBranco = !Tabuleiro.vezBranco;
 					break;
 				case bloqueado:
 					//MOSTRAR UM ALERT DIZENDO QUE A PECA TA BLOQUEADA <--------------------------- LIV
