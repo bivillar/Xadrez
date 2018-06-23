@@ -21,7 +21,7 @@ public class Window extends JFrame implements ActionListener{
 
 //	protected JButton novo, carregar;
     public final int LARG_DEFAULT=560;
-    public final int ALT_DEFAULT=582;
+    public final int ALT_DEFAULT=600;
     public DesenhoTabuleiro tab;
     private JPanel panel;
     private JButton novo,carregar;
@@ -29,16 +29,17 @@ public class Window extends JFrame implements ActionListener{
     private Image img;
     private Casa[][] tabuleiro;
     JMenuBar menuBar;
-    JMenuItem menuItem;
-    JMenu menu, submenu;
+    JMenuItem menuItem, menuItem1;
+    JMenu menu;
+    Tabuleiro t = new Tabuleiro();
     
-    public Window(Casa t[][]) {
-    	
+    public Window() {
+    		
     		//Create the menu bar.
         menuBar = new JMenuBar();
         
         //Build the first menu.
-        menu = new JMenu("Jogo");
+        menu = new JMenu("Opções");
         menu.getAccessibleContext().setAccessibleDescription("Menu");
         menuBar.add(menu);
         
@@ -47,7 +48,11 @@ public class Window extends JFrame implements ActionListener{
         menuItem.setActionCommand("salvar");
         menu.add(menuItem);
         
-    		tabuleiro=t;
+        menuItem1 = new JMenuItem("Novo Jogo");
+        menuItem1.addActionListener(this);
+        menuItem1.setActionCommand("reiniciar");
+        menu.add(menuItem1);
+        	
         
         panel = new JPanel();
         try {
@@ -101,6 +106,8 @@ public class Window extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if("novo".equals(e.getActionCommand())) {
 			panel.setVisible(false);
+			t.reinicia();
+			tabuleiro=t.get_Tabuleiro();
 			tab= new DesenhoTabuleiro(tabuleiro);
 			getContentPane().add(tab);
 			this.setJMenuBar(menuBar);
@@ -117,9 +124,9 @@ public class Window extends JFrame implements ActionListener{
 		        	BufferedReader fr = new BufferedReader(r);
 		        	
 		        	// LER O ARQUIVO
-		        	//Carregar(fr);
-		        	//tab= new DesenhoTabuleiro(tabuleiro);
-					//getContentPane().add(tab);
+//		        	Carregar(fr);
+//		        	tab= new DesenhoTabuleiro(tabuleiro);
+//				getContentPane().add(tab);
 		        	
 		            fr.close();
 		        } catch (Exception ex) {
@@ -129,7 +136,11 @@ public class Window extends JFrame implements ActionListener{
 			}
 		}else if("salvar".equals(e.getActionCommand())) {
 			final JFileChooser fc1 = new JFileChooser();
+		}else if("reiniciar".equals(e.getActionCommand())) {
+			getContentPane().remove(tab);
+			panel.setVisible(true);
 		}	
+		
 	}
     
     

@@ -8,9 +8,9 @@ public class Main {
 	static Window janelaJogo;
 	
 	public static void main(String[] args) {
-		Tabuleiro t = new Tabuleiro();
+		
 		//t.imprime();
-		janelaJogo = new Window(t.get_Tabuleiro());
+		janelaJogo = new Window();
 		
 		janelaJogo.setVisible(true);
 		janelaJogo.addMouseListener(new Controlador());

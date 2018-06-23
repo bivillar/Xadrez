@@ -11,7 +11,18 @@ public class Tabuleiro {
 	
 	
 	public Tabuleiro () {
-		
+		reinicia();
+	}
+	
+	public static Casa[][] get_Tabuleiro (){
+		return _casa;
+	}
+	
+	public static movimento[][] get_Jogadas (){
+		return _jogadas;
+	}
+	
+	public static void reinicia() {
 		for (int y=0;y<8;y++) {
 			for(int x=0;x<8;x++) {
 				if(y%2 == 0) {
@@ -62,14 +73,6 @@ public class Tabuleiro {
 		_casa[7][6].peca = (Peao) new Peao('b',new Posicao(7,6));	
 		
 		update_Jogadas();
-	}
-	
-	public static Casa[][] get_Tabuleiro (){
-		return _casa;
-	}
-	
-	public static movimento[][] get_Jogadas (){
-		return _jogadas;
 	}
 	
 	public static void move_peca(Posicao pos, Posicao dest, Casa[][] tab) {
