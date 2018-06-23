@@ -98,6 +98,7 @@ public class Window extends JFrame implements ActionListener{
         panel.setPreferredSize(new Dimension(100, 100));
         panel.add(novo);
         panel.add(carregar);
+        panel.setAlignmentY(CENTER_ALIGNMENT);
         getContentPane().add(panel, BorderLayout.CENTER);
 
     }
