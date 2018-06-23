@@ -134,16 +134,50 @@ public class Controlador implements MouseListener{
 	
 	//NAO ESTA FUNCIONANDO DIREITO
 	public void Salvar(BufferedWriter fileWriter) {
+		PECA p;
+		String aux2="";
+		
 		try {
 			fileWriter.write(String.valueOf(vezBranco));
 			fileWriter.newLine();
-			
+		
         	for(int i=0; i<8;i++){
     			for(int j=0; j<8;j++){
-    				if (_tabuleiro[i][j].peca != null){
-    					fileWriter.write("B" + _tabuleiro[i][j].peca.tipo );
+    				char aux=' ';
+    				p=_tabuleiro[j][i].peca;
+    				aux2=" Vz";
+    				if (p != null){
+    					
+    					switch(p.tipo){
+    					case peao:
+    						aux = 'p';
+    						break;
+    					case torre:
+    						aux = 't';
+    						break;
+    					case cavalo:
+    						aux = 'c';
+    						break;
+    					case bispo:
+    						aux = 'b';
+    						break;
+    					case rainha:
+    						aux = 'q';
+    						break;
+    					case rei:
+    						aux = 'k';
+    						break;
+    					}
+    					
+    					if(p.time=='b') {
+    						aux2=" B"+aux;
+    					}
+    					else {
+    						aux2=" P"+aux;
+    					}
     				}
-    				
+    				fileWriter.write(aux2);
+
     			}
     			fileWriter.newLine();
         	}
