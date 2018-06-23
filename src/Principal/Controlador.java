@@ -114,7 +114,7 @@ public class Controlador implements MouseListener{
 				}
 			}
 		}
-		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].movT='p'; //indica que Ã© a posiÃ§Ã£o do prÃ³prio peÃ£o
+		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].movT='p'; //indica que é a posição do próprio peão
 		//obsTab.notify();
 		Main.janelaJogo.tab.repaint();
 
@@ -240,7 +240,7 @@ public class Controlador implements MouseListener{
 				System.out.println("Casa vazia, Tente outra vez");
 				_origem = null;
 			}else if((vezBranco && _origem.peca.time=='p') || (!vezBranco && _origem.peca.time=='b')) {
-				System.out.println("NÃ£o Ã© sua vez");
+				System.out.println("Não é sua vez");
 				_origem = null;
 			}
 			else {
@@ -293,7 +293,7 @@ public class Controlador implements MouseListener{
 			} else {
 				switch(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y]) {
 				case invalido:
-					System.out.println("Movimento InvÃ¡lido");
+					System.out.println("Movimento Inválido");
 					//Tabuleiro.imprime();
 					break;
 				case valido:
