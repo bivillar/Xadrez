@@ -341,7 +341,7 @@ public class Controlador implements MouseListener{
 			for(int y=0;y<8;y++) {
 				if(!_tabuleiro[x][y].vazia() && _tabuleiro[x][y].peca.time == time) {
 					for(int k=0;k<64;k++) {
-						if(_jogadas[x+8*y][k] == movimento.valido || _jogadas[x+8*y][k] == movimento.ataque_valido || _jogadas[x+8*y][k] == movimento.ataque)
+						if(_jogadas[x+8*y][k] == movimento.valido || _jogadas[x+8*y][k] == movimento.ataque)
 							return false;
 					}
 				}

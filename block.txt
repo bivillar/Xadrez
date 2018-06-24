@@ -1,0 +1,9 @@
+false
+Vz0 Vz0 Pb0 Pq0 Pk0 Pb0 Pc0 Pt0 
+Vz0 Vz0 Vz0 Vz0 Vz0 Vz0 Vz0 Pp0 
+Vz0 Vz0 Pc1 Vz0 Vz0 Vz0 Vz0 Bp1 
+Vz0 Vz0 Vz0 Vz0 Vz0 Vz0 Vz0 Vz0 
+Pt1 Pp1 Vz0 Vz0 Pp1 Pp1 Vz0 Vz0 
+Vz0 Vz0 Pp1 Vz0 Vz0 Vz0 Pp1 Vz0 
+Vz0 Vz0 Pp1 Vz0 Vz0 Vz0 Pp1 Vz0 
+Vz0 Vz0 Vz0 Vz0 Bk1 Vz0 Vz0 Vz0 

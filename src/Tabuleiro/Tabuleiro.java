@@ -11,7 +11,7 @@ import Pecas.*;
 public class Tabuleiro {
 	private static Casa _casa[][] = new Casa[8][8];
 	private static movimento _jogadas[][] = new movimento[64][64];
-	public static boolean vezBranco = true;
+	public static boolean vezBranco = false;
 	public static Posicao posReiBranco;
 	public static Posicao posReiPreto;
 
@@ -106,7 +106,7 @@ public class Tabuleiro {
 		}
 
 		if((line = bufferedReader.readLine())!=null) {
-			if(line == "false")
+			if(line.contains("false"))
 				vezBranco = false;
 			else
 				vezBranco = true;
@@ -294,6 +294,7 @@ public class Tabuleiro {
 
 		try {
 			fileWriter.write(String.valueOf(vezBranco));
+			System.out.println(String.valueOf(vezBranco));
 			fileWriter.newLine();
 
 			for(int i=0; i<8;i++){
