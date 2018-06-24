@@ -14,6 +14,8 @@ public class Tabuleiro {
 	public static boolean vezBranco = false;
 	public static Posicao posReiBranco;
 	public static Posicao posReiPreto;
+	public static boolean vXeque = false;
+	private static Posicao pXequeAtaque = new Posicao();
 
 	public Tabuleiro () {
 		inicia();
@@ -112,6 +114,16 @@ public class Tabuleiro {
 				vezBranco = true;
 		}
 
+		if((line = bufferedReader.readLine())!=null) {
+			if(line.contains("false"))
+				vXeque = false;
+			else {
+				vXeque = true;
+				pXequeAtaque.x = Integer.parseInt(String.valueOf(line.charAt(5)));
+				pXequeAtaque.y = Integer.parseInt(String.valueOf(line.charAt(7)));
+			}
+		}
+		
 		for(int y=0; (line = bufferedReader.readLine()) != null ;y++) {
 			for(int x=0,i=0;i<32;i+=2) {
 				if(line.charAt(i)=='P') {
@@ -134,6 +146,10 @@ public class Tabuleiro {
 					break;
 				case 'k':
 					_casa[x][y].peca = (Rei) new Rei(time,new Posicao(x,y));
+					if(time == 'b')
+						posReiBranco= new Posicao(x,y);
+					else
+						posReiPreto= new Posicao(x,y);
 					break;
 				case 'p':
 					_casa[x][y].peca = (Peao) new Peao(time,new Posicao(x,y));
@@ -145,8 +161,15 @@ public class Tabuleiro {
 				}
 				x++;
 			}
-		}  
+		}
 		update_Jogadas();
+		if(vXeque) {
+			if(_casa[pXequeAtaque.x][pXequeAtaque.y].peca.time == 'b') {
+				xeque(pXequeAtaque, posReiPreto);
+			}else {
+				xeque(pXequeAtaque, posReiBranco);
+			}
+		}
 	}
 
 	public static void move_peca(Posicao pos, Posicao dest, Casa[][] tab) {
@@ -160,7 +183,6 @@ public class Tabuleiro {
 
 
 	public static void update_Jogadas () {	
-		int i=0;
 		for(int k = 0;k<64;k++)
 			for(int t=0;t<64;t++)
 				_jogadas[t][k]=movimento.invalido;
@@ -188,6 +210,7 @@ public class Tabuleiro {
 		boolean temSaida = false;
 		int rx, ry;
 		char timeRei = _casa[rei.x][rei.y].peca.time;
+		pXequeAtaque = ataque;
 		
 		//procurar bloqueio
 		if(_casa[ataque.x][ataque.y].peca.tipo != tPecas.cavalo) { //só tem bloqueio se nao é cavalo
@@ -294,7 +317,12 @@ public class Tabuleiro {
 
 		try {
 			fileWriter.write(String.valueOf(vezBranco));
-			System.out.println(String.valueOf(vezBranco));
+			fileWriter.newLine();
+			fileWriter.write(String.valueOf(vXeque));
+			
+			if(vXeque)
+				fileWriter.write(" "+pXequeAtaque.x+" "+pXequeAtaque.y);
+			
 			fileWriter.newLine();
 
 			for(int i=0; i<8;i++){

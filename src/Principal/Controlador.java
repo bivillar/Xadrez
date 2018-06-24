@@ -21,7 +21,6 @@ public class Controlador implements MouseListener{
 	private Posicao _pos = new Posicao (0,0);
 	private Posicao _dest  = new Posicao (0,0);
 	private ObserverTab obsTab;
-	private boolean xeque = false;
 	private boolean xequeMate = false;
 	private JPopupMenu popupmenu;
 	private JPopupMenu popupmenuPromo; 
@@ -223,7 +222,7 @@ public class Controlador implements MouseListener{
 
 			}else if(!_destino.vazia() && _destino.peca.time == _origem.peca.time) {
 				if(_destino.peca.tipo == tPecas.torre && _origem.peca.tipo == tPecas.rei) {
-					if(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y] == movimento.valido && !xeque) {
+					if(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y] == movimento.valido && !Tabuleiro.vXeque) {
 						//ROQUE
 
 						Posicao nRei = new Posicao();
@@ -256,8 +255,8 @@ public class Controlador implements MouseListener{
 				}
 			} else {
 				if(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y]== movimento.valido ||  _jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y]== movimento.ataque) {
-					if(xeque)
-						xeque = false;
+					if(Tabuleiro.vXeque)
+						Tabuleiro.vXeque = false;
 					Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
 
 					if(!(_destino.peca.tipo != tPecas.peao || (_destino.peca.time == 'b' && _destino.peca.pos.y!=0) || (_destino.peca.time == 'p' && _destino.peca.pos.y!=7))) {
@@ -272,7 +271,7 @@ public class Controlador implements MouseListener{
 			}
 			_destino = null;
 		}
-		if(xequeMate || xeque) {
+		if(xequeMate || Tabuleiro.vXeque) {
 			xequeMate = false;
 		}else {
 			if(Tabuleiro.vezBranco && congelamento('b')) {
@@ -316,7 +315,7 @@ public class Controlador implements MouseListener{
 										JOptionPane.WARNING_MESSAGE);
 								Main.janelaJogo.novo();
 							}else if(Tabuleiro.xeque(new Posicao(x,y),reis[i])) {
-								xeque = true;
+								Tabuleiro.vXeque = true;
 								JOptionPane.showMessageDialog(Main.janelaJogo,
 										"XEQUE PELO TIME " + time[i],
 										"Aviso",
