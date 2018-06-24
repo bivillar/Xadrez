@@ -15,6 +15,7 @@ import java.io.File;
 
 
 public class DesenhoTabuleiro extends JPanel{
+	private static final long serialVersionUID = 1L;
 	Casa tabuleiro[][];
 	Image imgPb, imgTb, imgCb, imgBb, imgQb, imgRb;
 	Image imgPp, imgTp, imgCp, imgBp, imgQp, imgRp;

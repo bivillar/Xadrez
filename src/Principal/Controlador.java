@@ -4,23 +4,21 @@ import java.awt.event.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 
 import Tabuleiro.*;
 import Pecas.*;
-import Interface.*;
 
 import javax.swing.*;
+
+import Interface.Window;
 
 public class Controlador implements MouseListener{
 	private Casa _tabuleiro[][];
 	private movimento _jogadas[][];
-	private Casa _xeque[][];
 	private Casa _origem = null;
 	private Casa _destino = null;
 	private Posicao _pos = new Posicao (0,0);
 	private Posicao _dest  = new Posicao (0,0);
-	private ObserverTab obsTab;
 	private boolean xequeMate = false;
 	private JPopupMenu popupmenu;
 	private JPopupMenu popupmenuPromo; 
@@ -118,7 +116,7 @@ public class Controlador implements MouseListener{
 		}
 		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].movT='p'; //indica que é a posição do próprio peão
 		//obsTab.notify();
-		Main.janelaJogo.tab.repaint();
+		Window.tab.repaint();
 
 	}
 
@@ -130,7 +128,7 @@ public class Controlador implements MouseListener{
 		}
 
 		//obsTab.notify();
-		Main.janelaJogo.tab.repaint();
+		Window.tab.repaint();
 	}
 
 	@Override
@@ -195,8 +193,6 @@ public class Controlador implements MouseListener{
 
 		_tabuleiro = Tabuleiro.get_Tabuleiro();
 		_jogadas = Tabuleiro.get_Jogadas();
-		String time="";
-		//char original = 'b';
 
 		if(_origem == null) { // nao selecionaram quem vai atacar ate agora
 			_pos.set_Pos(c.getX(), c.getY());
