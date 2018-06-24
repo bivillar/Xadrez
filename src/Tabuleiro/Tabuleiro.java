@@ -288,6 +288,7 @@ public class Tabuleiro {
 			_casa[pos.x][pos.y].peca = (Cavalo) new Cavalo(_casa[pos.x][pos.y].peca.time,pos);
 			break;
 		}
+		update_Jogadas();
 	}
 
 

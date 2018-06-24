@@ -22,6 +22,7 @@ public class Controlador implements MouseListener{
 	private Posicao _dest  = new Posicao (0,0);
 	private ObserverTab obsTab;
 	private boolean xeque = false;
+	private boolean xequeMate = false;
 	private JPopupMenu popupmenu;
 	private JPopupMenu popupmenuPromo; 
 
@@ -278,11 +279,29 @@ public class Controlador implements MouseListener{
 			}
 			_destino = null;
 		}
+		if(xequeMate || xeque) {
+			xequeMate = false;
+		}else {
+			if(Tabuleiro.vezBranco && congelamento('b')) {
+				JOptionPane.showMessageDialog(Main.janelaJogo,
+						"EMPATE!!\nNÃO HÁ MAIS JOGADAS VÁLIDAS PARA O TIME BRANCO",
+						"Aviso",
+						JOptionPane.WARNING_MESSAGE);
+				Main.janelaJogo.novo();
+			}else if(!Tabuleiro.vezBranco && congelamento('p')) {
+				JOptionPane.showMessageDialog(Main.janelaJogo,
+						"EMPATE!!\nNÃO HÁ MAIS JOGADAS VÁLIDAS PARA O TIME PRETO",
+						"Aviso",
+						JOptionPane.WARNING_MESSAGE);
+				Main.janelaJogo.novo();
+			}
+		}
 	}
 
 	private void verifica_xeque() {
 		Posicao reis[]= {Tabuleiro.posReiBranco,Tabuleiro.posReiPreto}; 
-
+		String time[]= {"PRETO", "BRANCO"};
+		
 		for(int i=0;i<2;i++) {
 			for(int y=0;y<8;y++) {
 				for(int x=0;x<8;x++) {
@@ -291,12 +310,13 @@ public class Controlador implements MouseListener{
 						if(Tabuleiro.xeque(new Posicao(x,y),reis[i])) {
 							xeque = true;
 							JOptionPane.showMessageDialog(Main.janelaJogo,
-									"XEQUE PELO TIME" + _tabuleiro[x][y].peca.time,
+									"XEQUE PELO TIME " + time[i],
 									"Aviso",
 									JOptionPane.WARNING_MESSAGE);
 						}else {
+							xequeMate = true;
 							JOptionPane.showMessageDialog(Main.janelaJogo,
-									"XEQUE-MATE!!\n VITORIA DO TIME" + _tabuleiro[x][y].peca.time,
+									"XEQUE-MATE!!\n VITORIA DO TIME " + time[i],
 									"Aviso",
 									JOptionPane.WARNING_MESSAGE);
 							Main.janelaJogo.novo();
@@ -305,6 +325,20 @@ public class Controlador implements MouseListener{
 				}
 			}
 		}
+	}
+
+	private boolean congelamento(char time) {
+		for(int x=0;x<8;x++) {
+			for(int y=0;y<8;y++) {
+				if(!_tabuleiro[x][y].vazia() && _tabuleiro[x][y].peca.time == time) {
+					for(int k=0;k<64;k++) {
+						if(_jogadas[x+8*y][k] == movimento.valido || _jogadas[x+8*y][k] == movimento.ataque_valido || _jogadas[x+8*y][k] == movimento.ataque)
+							return false;
+					}
+				}
+			}
+		}
+		return true;
 	}
 
 	private void promoPeaoJpop (Casa c){ //tentei fazer com Jpop q é como ele quer mas n consegui :(
@@ -316,6 +350,7 @@ public class Controlador implements MouseListener{
 			public void actionPerformed(ActionEvent e) {              
 				Tabuleiro.promovePeao(c.peca.pos,"Rainha");
 				repaintTabuleiro();
+				verifica_xeque();
 			}  
 		});
 
@@ -324,6 +359,7 @@ public class Controlador implements MouseListener{
 			public void actionPerformed(ActionEvent e) {              
 				Tabuleiro.promovePeao(c.peca.pos,"Torre");
 				repaintTabuleiro();
+				verifica_xeque();
 			}  
 		});
 
@@ -332,6 +368,7 @@ public class Controlador implements MouseListener{
 			public void actionPerformed(ActionEvent e) {              
 				Tabuleiro.promovePeao(c.peca.pos,"Bispo");
 				repaintTabuleiro();
+				verifica_xeque();
 			}  
 		});
 
@@ -340,9 +377,9 @@ public class Controlador implements MouseListener{
 			public void actionPerformed(ActionEvent e) {              
 				Tabuleiro.promovePeao(c.peca.pos,"Cavalo");
 				repaintTabuleiro();
+				verifica_xeque();
 			}  
 		});
-
 	}
 
 
