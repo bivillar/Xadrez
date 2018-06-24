@@ -277,7 +277,7 @@ public class Controlador implements MouseListener{
 		}else {
 			if(Tabuleiro.vezBranco && congelamento('b')) {
 				JOptionPane.showMessageDialog(Main.janelaJogo,
-						"EMPATE!!\nNÃO HÁ MAIS JOGADAS VÁLIDAS PARA O TIME BRANCO",
+						"CONGELAMENTO!!\nNÃO HÁ MAIS JOGADAS VÁLIDAS PARA O TIME BRANCO",
 						"Aviso",
 						JOptionPane.WARNING_MESSAGE);
 				Main.janelaJogo.novo();
