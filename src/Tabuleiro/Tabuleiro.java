@@ -231,7 +231,6 @@ public class Tabuleiro {
 			else if(Math.abs(ataque.x-rei.x)== Math.abs(ataque.y-rei.y)) {//diagonal
 				rx = (ataque.x-rei.x)/Math.abs(ataque.x-rei.x);
 				ry = (ataque.y-rei.y)/Math.abs(ataque.y-rei.y);
-				System.out.println("rei: x-"+rei.x+"y-"+rei.y);
 				
 				for(int y=0;y<8;y++) {
 					for(int x=0;x<8;x++) {
@@ -239,9 +238,6 @@ public class Tabuleiro {
 							if(!_casa[x][y].vazia() && _casa[x][y].peca.time == timeRei && _jogadas[x+8*y][X+8*Y] == movimento.valido) {
 								temSaida = true;
 								_jogadas[x+8*y][X+8*Y] = movimento.tiraXeque;
-								System.out.println("----------------------");
-								System.out.println("ajuda: x="+x+" y="+y);
-								System.out.println("caminho: x="+X+" y="+Y);
 							}
 						}
 					}

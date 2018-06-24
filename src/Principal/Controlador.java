@@ -30,7 +30,6 @@ public class Controlador implements MouseListener{
 		//int x,y;
 
 		if(pos.x>560 || pos.y>580) {
-			System.out.println("Fora do tab");
 			return null;
 		}
 		else {
@@ -204,14 +203,9 @@ public class Controlador implements MouseListener{
 			_pos.set_Pos(c.getX(), c.getY());
 			_origem = get_casa(_pos,_tabuleiro);
 
-			if(_origem == null) {
-				System.out.println("Tente outra vez");
-
-			}else if(_origem.vazia()) { //nao tem peca
-				System.out.println("Casa vazia, Tente outra vez");
+			if(_origem != null && _origem.vazia()) { //nao tem peca
 				_origem = null;
-			}else if((Tabuleiro.vezBranco && _origem.peca.time=='p') || (!Tabuleiro.vezBranco && _origem.peca.time=='b')) {
-				System.out.println("Não é sua vez");
+			}else if(_origem != null && ((Tabuleiro.vezBranco && _origem.peca.time=='p') || (!Tabuleiro.vezBranco && _origem.peca.time=='b'))) {
 				_origem = null;
 			}
 			else {
@@ -224,7 +218,6 @@ public class Controlador implements MouseListener{
 			_destino = get_casa(_dest,_tabuleiro);
 
 			if(_origem == _destino || _destino == null) {
-				System.out.println("Tente outra vez");
 				_origem = null;
 				repaintTabuleiro();
 
