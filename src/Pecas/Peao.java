@@ -9,16 +9,6 @@ public class Peao extends PECA{
 	}
 	
 	@Override
-//	public boolean mov_valido(Posicao dest) { 
-//		if(dest.x == pos.x) {
-//			if((time == 'b' && dest.y<pos.y)||(time == 'p' && dest.y>pos.y)) {
-//				if(Math.abs(dest.y-pos.y)==1 || (this.primeira_jogada() && Math.abs(dest.y-pos.y) == 2))
-//					return true;
-//			}
-//		}
-//		return false;
-//	}
-	
 	public movimento[] mov_valido(Casa casas[][])  { 
 		movimento movs[] = new movimento[64];
 		int fator=1;

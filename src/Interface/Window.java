@@ -29,31 +29,11 @@ public class Window extends JFrame implements ActionListener{
 	private JLabel l;
 	private Image img;
 	private Casa[][] tabuleiro;
-	JMenuBar menuBar;
-	JMenuItem menuItem, menuItem1;
-	JMenu menu;
 	Tabuleiro t = new Tabuleiro();
 	public JPopupMenu popupmenu;
 	final JFrame f= new JFrame("PopupMenu");  
 
 	public Window() {
-		
-		//		menuBar = new JMenuBar();
-		//		menu = new JMenu("Opções");
-		//		menu.getAccessibleContext().setAccessibleDescription("Menu");
-		//		menuBar.add(menu);
-		//
-		//		menuItem = new JMenuItem("Salvar");
-		//		menuItem.addActionListener(this);
-		//		menuItem.setActionCommand("salvar");
-		//		menu.add(menuItem);
-		//
-		//		menuItem1 = new JMenuItem("Novo Jogo");
-		//		menuItem1.addActionListener(this);
-		//		menuItem1.setActionCommand("reiniciar");
-		//		menu.add(menuItem1);
-
-
 		panel = new JPanel();
 		try {
 			img = ImageIO.read(new File("Imagens/chess.png"));
@@ -98,6 +78,7 @@ public class Window extends JFrame implements ActionListener{
 		panel.add(novo);
 		panel.add(carregar);
 		getContentPane().add(panel, BorderLayout.CENTER);
+
 	}
 
 	public void novo(){
@@ -133,7 +114,6 @@ public class Window extends JFrame implements ActionListener{
 					tabuleiro = Tabuleiro.get_Tabuleiro();
 					tab= new DesenhoTabuleiro(tabuleiro);
 					getContentPane().add(tab);
-					this.setJMenuBar(menuBar);
 
 					fr.close();
 				} catch (Exception ex) {

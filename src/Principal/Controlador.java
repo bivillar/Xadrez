@@ -15,6 +15,7 @@ import javax.swing.*;
 public class Controlador implements MouseListener{
 	private Casa _tabuleiro[][];
 	private movimento _jogadas[][];
+	private Casa _xeque[][];
 	private Casa _origem = null;
 	private Casa _destino = null;
 	private Posicao _pos = new Posicao (0,0);
@@ -22,8 +23,7 @@ public class Controlador implements MouseListener{
 	private ObserverTab obsTab;
 	private boolean xeque = false;
 	private JPopupMenu popupmenu;
-	private JPopupMenu popupmenuPromo;
-	//final JFrame f= new JFrame("PopupMenu");  
+	private JPopupMenu popupmenuPromo; 
 
 	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que estao dentro dela, se houver
 		//int x,y;
@@ -172,27 +172,27 @@ public class Controlador implements MouseListener{
 		if(SwingUtilities.isRightMouseButton(c)) {
 			popupmenu.show(Main.janelaJogo , c.getX(), c.getY());  
 		}
-		
+
 		//se for pra subir direto, comentar linhas aqui em cima e descomentar as abaixo
 
-//		if(SwingUtilities.isRightMouseButton(c)) {
-//			final JFileChooser fc = new JFileChooser();
-//			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-//			int retrival = fc.showSaveDialog(null);
-//			if (retrival == JFileChooser.APPROVE_OPTION) {
-//				try {
-//					FileWriter w = new FileWriter(fc.getSelectedFile() + ".txt", false);
-//					BufferedWriter fw = new BufferedWriter(w);
-//					// COLOCAR O QUE SALVAR 
-//					Tabuleiro.Salvar(fw);
-//					fw.close();
-//				}
-//				catch (Exception ex) {
-//					// Error writing game file
-//					ex.printStackTrace();
-//				}
-//			} 
-//		}
+		//		if(SwingUtilities.isRightMouseButton(c)) {
+		//			final JFileChooser fc = new JFileChooser();
+		//			fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+		//			int retrival = fc.showSaveDialog(null);
+		//			if (retrival == JFileChooser.APPROVE_OPTION) {
+		//				try {
+		//					FileWriter w = new FileWriter(fc.getSelectedFile() + ".txt", false);
+		//					BufferedWriter fw = new BufferedWriter(w);
+		//					// COLOCAR O QUE SALVAR 
+		//					Tabuleiro.Salvar(fw);
+		//					fw.close();
+		//				}
+		//				catch (Exception ex) {
+		//					// Error writing game file
+		//					ex.printStackTrace();
+		//				}
+		//			} 
+		//		}
 
 		_tabuleiro = Tabuleiro.get_Tabuleiro();
 		_jogadas = Tabuleiro.get_Jogadas();
@@ -261,55 +261,17 @@ public class Controlador implements MouseListener{
 					verificaCaminhosLivres(_origem);
 				}
 			} else {
-				switch(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y]) {
-				case invalido:
-					System.out.println("Movimento Inválido");
-					//Tabuleiro.imprime();
-					break;
-				case valido:
+				if(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y]== movimento.valido ||  _jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y]== movimento.ataque) {
 					if(xeque)
 						xeque = false;
-					System.out.println("Caminho Livre");
-
 					Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
 
-					//Tabuleiro.imprime();
-					verifica_xeque(_destino);
-					promoPeaoJpop(_destino); //PROMOCAO PEAO
-					popupmenuPromo.show(Main.janelaJogo, c.getX(), c.getY()); 
-					Tabuleiro.vezBranco = !Tabuleiro.vezBranco;	
-					break;
-				case ataque:
-					if(xeque)
-						xeque = false;
-					System.out.println("ATAQUE!");
-					if(_destino.peca.tipo == tPecas.rei) {
-						if(_destino.peca.time == 'b')
-							time = "BRANCO";
-						else
-							time = "PRETO";
-
-						JOptionPane.showMessageDialog(Main.janelaJogo,
-								"XEQUE-MATE!!\n VITORIA DO TIME "+time,
-								"Aviso",
-								JOptionPane.PLAIN_MESSAGE);
+					if(!(_destino.peca.tipo != tPecas.peao || (_destino.peca.time == 'b' && _destino.peca.pos.y!=0) || (_destino.peca.time == 'p' && _destino.peca.pos.y!=7))) {
+						promoPeaoJpop(_destino); //PROMOCAO PEAO
+						popupmenuPromo.show(Main.janelaJogo, c.getX(), c.getY()); 
 					}
-
-
-					Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
-					promoPeaoJpop(_destino); //PROMOCAO PEAO
-					popupmenuPromo.show(Main.janelaJogo, c.getX(), c.getY()); 
-					
-					//Tabuleiro.imprime();
-					verifica_xeque(_destino);
-
-					Tabuleiro.vezBranco = !Tabuleiro.vezBranco;
-					break;
-				case bloqueado:
-					//MOSTRAR UM ALERT DIZENDO QUE A PECA TA BLOQUEADA <--------------------------- LIV
-					System.out.println("Peça bloqueada");
-					//Tabuleiro.imprime();
-					break;
+					Tabuleiro.vezBranco = !Tabuleiro.vezBranco;	
+					verifica_xeque();
 				}
 				repaintTabuleiro();
 				_origem = null;
@@ -318,76 +280,36 @@ public class Controlador implements MouseListener{
 		}
 	}
 
-	private void verifica_xeque (Casa c){
-		String time;
-		if(c.peca.time == 'b')
-			time = "BRANCO";
-		else
-			time = "PRETO";
+	private void verifica_xeque() {
+		Posicao reis[]= {Tabuleiro.posReiBranco,Tabuleiro.posReiPreto}; 
 
-		for(int x=0;x<8;x++) {
+		for(int i=0;i<2;i++) {
 			for(int y=0;y<8;y++) {
-				if((_jogadas[c.peca.pos.x + 8*c.peca.pos.y][x+8*y]==movimento.ataque || _jogadas[c.peca.pos.x + 8*c.peca.pos.y][x+8*y]==movimento.ataque_valido)
-						&& !_tabuleiro[x][y].vazia() && _tabuleiro[x][y].peca.tipo == tPecas.rei) {
-					for(int X=0;X<8;X++) {
-						for(int Y=0;Y<8;Y++) {
-							if(_jogadas[x+8*y][X+8*Y] == movimento.ataque || _jogadas[x+8*y][X+8*Y] == movimento.ataque_valido || _jogadas[x+8*y][X+8*Y] == movimento.valido) {
-								JOptionPane.showMessageDialog(Main.janelaJogo,
-										"XEQUE PELO TIME "+time,
-										"Aviso",
-										JOptionPane.WARNING_MESSAGE);
-
-								System.out.println("XEQUE!!");
-								Tabuleiro.xeque(c.peca.pos, new Posicao(x,y));
-								xeque = true;
-								return;
-							}
-							else if(_jogadas[X+8*Y][c.peca.pos.x+c.peca.pos.y*8] == movimento.ataque || (_jogadas[X+8*Y][c.peca.pos.x+c.peca.pos.y*8] == movimento.ataque_valido && _tabuleiro[X][Y].peca.time != c.peca.time)){
-								JOptionPane.showMessageDialog(Main.janelaJogo,
-										"XEQUE PELO TIME "+time,
-										"Aviso",
-										JOptionPane.WARNING_MESSAGE);
-
-								System.out.println("XEQUE!!");
-								Tabuleiro.xeque(c.peca.pos, new Posicao(x,y));
-								xeque = true;
-								return;
-							}
+				for(int x=0;x<8;x++) {
+					if(_jogadas[x+8*y][reis[i].x+reis[i].y*8] == movimento.ataque || _jogadas[x+8*y][reis[i].x+reis[i].y*8] == movimento.ataque_valido) {
+						//XEQUE OU XEQUE MATE
+						if(Tabuleiro.xeque(new Posicao(x,y),reis[i])) {
+							xeque = true;
+							JOptionPane.showMessageDialog(Main.janelaJogo,
+									"XEQUE PELO TIME" + _tabuleiro[x][y].peca.time,
+									"Aviso",
+									JOptionPane.WARNING_MESSAGE);
+						}else {
+							JOptionPane.showMessageDialog(Main.janelaJogo,
+									"XEQUE-MATE!!\n VITORIA DO TIME" + _tabuleiro[x][y].peca.time,
+									"Aviso",
+									JOptionPane.WARNING_MESSAGE);
+							Main.janelaJogo.novo();
 						}
 					}
-					JOptionPane.showMessageDialog(Main.janelaJogo,
-							"XEQUE-MATE!!\n VITORIA DO TIME: "+time,
-							"Aviso",
-							JOptionPane.WARNING_MESSAGE);
-					Main.janelaJogo.novo();
 				}
 			}
-		}				
-	}
-
-	private Boolean caminhoBloqueado (Posicao a, Posicao b) {
-		int fat = 1;
-		System.out.println("oioi");
-		if(a.x>b.x) {
-			fat=-1;
 		}
-
-		for(int i = a.x; i!=b.x; i+=fat) {
-			if(!_tabuleiro[i][a.y].vazia()) {
-				System.out.println("x: "+i+"y: "+a.y);
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	private void promoPeaoJpop (Casa c){ //tentei fazer com Jpop q é como ele quer mas n consegui :(
 		popupmenuPromo= new JPopupMenu(); 
 		JMenuItem item;
-		
-		if(c.peca.tipo != tPecas.peao || (c.peca.time == 'b' && c.peca.pos.y!=0) || (c.peca.time == 'p' && c.peca.pos.y!=7))
-			return;
 
 		popupmenuPromo.add(item = new JMenuItem("Rainha"));
 		item.addActionListener(new ActionListener(){  
@@ -396,7 +318,7 @@ public class Controlador implements MouseListener{
 				repaintTabuleiro();
 			}  
 		});
-		
+
 		popupmenuPromo.add(item = new JMenuItem("Torre"));
 		item.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent e) {              
@@ -404,7 +326,7 @@ public class Controlador implements MouseListener{
 				repaintTabuleiro();
 			}  
 		});
-		
+
 		popupmenuPromo.add(item = new JMenuItem("Bispo"));
 		item.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent e) {              
@@ -412,7 +334,7 @@ public class Controlador implements MouseListener{
 				repaintTabuleiro();
 			}  
 		});
-		
+
 		popupmenuPromo.add(item = new JMenuItem("Cavalo"));
 		item.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent e) {              
@@ -422,10 +344,6 @@ public class Controlador implements MouseListener{
 		});
 
 	}
-
-
-
-
 
 
 	@Override

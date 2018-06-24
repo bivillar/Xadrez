@@ -12,6 +12,8 @@ public class Tabuleiro {
 	private static Casa _casa[][] = new Casa[8][8];
 	private static movimento _jogadas[][] = new movimento[64][64];
 	public static boolean vezBranco = true;
+	public static Posicao posReiBranco;
+	public static Posicao posReiPreto;
 
 	public Tabuleiro () {
 		inicia();
@@ -49,6 +51,7 @@ public class Tabuleiro {
 		_casa[2][0].peca = (Bispo) new Bispo('p',new Posicao(2,0));
 		_casa[3][0].peca = (Rainha) new Rainha('p',new Posicao(3,0));
 		_casa[4][0].peca = (Rei) new Rei('p',new Posicao(4,0));
+		posReiPreto = new Posicao(4,0);
 		_casa[5][0].peca = (Bispo) new Bispo('p',new Posicao(5,0));
 		_casa[6][0].peca = (Cavalo) new Cavalo('p',new Posicao(6,0));
 		_casa[7][0].peca = (Torre) new Torre('p',new Posicao(7,0));
@@ -67,6 +70,7 @@ public class Tabuleiro {
 		_casa[2][7].peca = (Bispo) new Bispo('b',new Posicao(2,7));
 		_casa[3][7].peca = (Rainha) new Rainha('b',new Posicao(3,7));
 		_casa[4][7].peca = (Rei) new Rei('b',new Posicao(4,7));
+		posReiBranco= new Posicao(4,7);
 		_casa[5][7].peca = (Bispo) new Bispo('b',new Posicao(5,7));
 		_casa[6][7].peca = (Cavalo) new Cavalo('b',new Posicao(6,7));
 		_casa[7][7].peca = (Torre) new Torre('b',new Posicao(7,7));
@@ -156,7 +160,6 @@ public class Tabuleiro {
 
 
 	public static void update_Jogadas () {	
-		Posicao [] pReis = {new Posicao(), new Posicao()};
 		int i=0;
 		for(int k = 0;k<64;k++)
 			for(int t=0;t<64;t++)
@@ -168,27 +171,106 @@ public class Tabuleiro {
 					if(_casa[x][y].peca.tipo != tPecas.rei)
 						_jogadas[x+8*y] = _casa[x][y].peca.mov_valido(_casa);
 					else { //guardo as posicoes dos reis pra nao ter que verificar todo o tabuleiro de novo
-						pReis[i].x = x;
-						pReis[i].y = y;
-						i++;
+						if(_casa[x][y].peca.time == 'b')
+							posReiBranco.set_Pos(x, y);
+						else
+							posReiPreto.set_Pos(x, y);
 					}
 				}
 			}
 		}
 
-		for(i=0;i<2;i++) //so preencho os reis depois que sei todos os outros
-			_jogadas[pReis[i].x+8*pReis[i].y] = _casa[pReis[i].x][pReis[i].y].peca.mov_valido(_casa);
-
+		_jogadas[posReiBranco.x+8*posReiBranco.y] = _casa[posReiBranco.x][posReiBranco.y].peca.mov_valido(_casa);
+		_jogadas[posReiPreto.x+8*posReiPreto.y] = _casa[posReiPreto.x][posReiPreto.y].peca.mov_valido(_casa);
 	}
 
-	public static void xeque(Posicao pos, Posicao rei) {
-		for(int k=0;k<64;k++) {
-			for(int t=0;t<64;t++){
-				if(t != pos.x+8*pos.y && k!= rei.x+8*rei.y) // so deixa manter as jogadas que tiram o xeque
-					_jogadas[k][t] = movimento.invalido;
-
+	public static boolean xeque(Posicao ataque, Posicao rei) {
+		boolean temSaida = false;
+		int rx, ry;
+		char timeRei = _casa[rei.x][rei.y].peca.time;
+		
+		//procurar bloqueio
+		if(_casa[ataque.x][ataque.y].peca.tipo != tPecas.cavalo) { //só tem bloqueio se nao é cavalo
+			
+			if(ataque.x - rei.x == 0) { // mesmo x
+				//mesmo x mas tem diferenca de y
+				ry = (ataque.y-rei.y)/Math.abs(ataque.y-rei.y);
+	
+				//pra cada posicao do tabuleiro verificar se a jogada na posicao entre o rei e o ataque é valido
+				//ou seja, pra cada posicao do tabuleiro tem q verificar pra cada posicao entre o rei e o ataque
+				for(int y=0;y<8;y++) {
+					for(int x=0;x<8;x++) {
+						for(int Y=rei.y+ry;Y!=ataque.y;Y+=ry) {
+							if(!_casa[x][y].vazia() && _casa[x][y].peca.time == timeRei && _jogadas[x+8*y][rei.x+8*Y] == movimento.valido) {
+								temSaida = true;
+								_jogadas[x+8*y][rei.x+8*Y] = movimento.tiraXeque;
+							}
+						}
+					}
+				}
+			}
+			
+			else if(ataque.y - rei.y ==0) { // mesmo y
+				//mesmo y mas tem diferenca de x
+				rx = (ataque.x-rei.x)/Math.abs(ataque.x-rei.x);
+	
+				//pra cada posicao do tabuleiro verificar se a jogada na posicao entre o rei e o ataque é valido
+				//ou seja, pra cada posicao do tabuleiro tem q verificar pra cada posicao entre o rei e o ataque
+				for(int y=0;y<8;y++) {
+					for(int x=0;x<8;x++) {
+						for(int X=rei.x+rx;X!=ataque.x;X+=rx) {
+							if(!_casa[x][y].vazia() && _casa[x][y].peca.time == timeRei && _jogadas[x+8*y][X+8*rei.y] == movimento.valido) {
+								temSaida = true;
+								_jogadas[x+8*y][X+8*rei.y] = movimento.tiraXeque;
+							}
+						}
+					}
+				}
+			}
+			
+			else if(Math.abs(ataque.x-rei.x)== Math.abs(ataque.y-rei.y)) {//diagonal
+				rx = (ataque.x-rei.x)/Math.abs(ataque.x-rei.x);
+				ry = (ataque.y-rei.y)/Math.abs(ataque.y-rei.y);
+				System.out.println("rei: x-"+rei.x+"y-"+rei.y);
+				
+				for(int y=0;y<8;y++) {
+					for(int x=0;x<8;x++) {
+						for(int X=rei.x+rx, Y=rei.y+ry;Y!=ataque.y && X!=ataque.x;X+=rx, Y+=ry) {
+							if(!_casa[x][y].vazia() && _casa[x][y].peca.time == timeRei && _jogadas[x+8*y][X+8*Y] == movimento.valido) {
+								temSaida = true;
+								_jogadas[x+8*y][X+8*Y] = movimento.tiraXeque;
+								System.out.println("----------------------");
+								System.out.println("ajuda: x="+x+" y="+y);
+								System.out.println("caminho: x="+X+" y="+Y);
+							}
+						}
+					}
+				}
 			}	
 		}
+		
+		//procurar ataque
+		for(int y=0;y<8;y++) {
+			for(int x=0;x<8;x++) {
+				if(_jogadas[x+8*y][ataque.x+8*ataque.y] == movimento.ataque || _jogadas[x+8*y][ataque.x+8*ataque.y] == movimento.ataque_valido) {
+					temSaida = true;
+				}else if(_jogadas[rei.x+rei.y*8][x+8*y] == movimento.valido || _jogadas[rei.x+rei.y*8][x+8*y] == movimento.ataque) {
+					temSaida = true;
+				}
+			}
+		}
+		
+		
+		for(int k=0;k<64;k++) {
+			for(int t=0;t<64;t++){
+				if(t != ataque.x+8*ataque.y && k!= rei.x+8*rei.y && _jogadas[k][t] != movimento.tiraXeque) // so deixa manter as jogadas que tiram o xeque
+					_jogadas[k][t] = movimento.invalido;
+				else if(_jogadas[k][t] == movimento.tiraXeque)
+					_jogadas[k][t] = movimento.valido;
+			}	
+		}
+
+		return temSaida;
 	}
 
 	public static void promovePeao(Posicao pos, String tipo) {
@@ -248,7 +330,7 @@ public class Tabuleiro {
 							aux3="1";
 						else
 							aux3="0";
-						
+
 						if(p.time=='b') {
 							aux2="B"+aux+aux3+' ';
 						}
