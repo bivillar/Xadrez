@@ -301,25 +301,41 @@ public class Controlador implements MouseListener{
 	private void verifica_xeque() {
 		Posicao reis[]= {Tabuleiro.posReiBranco,Tabuleiro.posReiPreto}; 
 		String time[]= {"PRETO", "BRANCO"};
-		
+		boolean vez[]= {false, false};
+
+		if(Tabuleiro.vezBranco) {
+			vez[0] = true;
+		}else {
+			vez[1] = true;
+		}
+
 		for(int i=0;i<2;i++) {
-			for(int y=0;y<8;y++) {
-				for(int x=0;x<8;x++) {
-					if(_jogadas[x+8*y][reis[i].x+reis[i].y*8] == movimento.ataque || _jogadas[x+8*y][reis[i].x+reis[i].y*8] == movimento.ataque_valido) {
-						//XEQUE OU XEQUE MATE
-						if(Tabuleiro.xeque(new Posicao(x,y),reis[i])) {
-							xeque = true;
-							JOptionPane.showMessageDialog(Main.janelaJogo,
-									"XEQUE PELO TIME " + time[i],
-									"Aviso",
-									JOptionPane.WARNING_MESSAGE);
-						}else {
-							xequeMate = true;
-							JOptionPane.showMessageDialog(Main.janelaJogo,
-									"XEQUE-MATE!!\n VITORIA DO TIME " + time[i],
-									"Aviso",
-									JOptionPane.WARNING_MESSAGE);
-							Main.janelaJogo.novo();
+			if(!xequeMate) {
+				for(int y=0;y<8;y++) {
+					for(int x=0;x<8;x++) {
+						if(_jogadas[x+8*y][reis[i].x+reis[i].y*8] == movimento.ataque || _jogadas[x+8*y][reis[i].x+reis[i].y*8] == movimento.ataque_valido) {
+							//XEQUE OU XEQUE MATE
+							if(!vez[i]) { // se nao é a vez do que ta com o rei em ataque, é xeque mate direto
+								xequeMate = true;
+								JOptionPane.showMessageDialog(Main.janelaJogo,
+										"XEQUE-MATE!!\nVITORIA DO TIME " + time[i],
+										"Aviso",
+										JOptionPane.WARNING_MESSAGE);
+								Main.janelaJogo.novo();
+							}else if(Tabuleiro.xeque(new Posicao(x,y),reis[i])) {
+								xeque = true;
+								JOptionPane.showMessageDialog(Main.janelaJogo,
+										"XEQUE PELO TIME " + time[i],
+										"Aviso",
+										JOptionPane.WARNING_MESSAGE);
+							}else {
+								xequeMate = true;
+								JOptionPane.showMessageDialog(Main.janelaJogo,
+										"XEQUE-MATE!!\nVITORIA DO TIME " + time[i],
+										"Aviso",
+										JOptionPane.WARNING_MESSAGE);
+								Main.janelaJogo.novo();
+							}
 						}
 					}
 				}
