@@ -10,8 +10,6 @@ import Pecas.*;
 
 import javax.swing.*;
 
-import Interface.Window;
-
 public class Controlador implements MouseListener{
 	private Casa _tabuleiro[][];
 	private movimento _jogadas[][];
@@ -23,6 +21,11 @@ public class Controlador implements MouseListener{
 	private JPopupMenu popupmenu;
 	private JPopupMenu popupmenuPromo;
 	public static ObserverTab obsTab = new ObserverTab();
+	Facade _facade;
+	
+	public Controlador(Facade facade) {
+		_facade = facade;
+	}
 
 	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que estao dentro dela, se houver
 		//int x,y;
@@ -116,7 +119,7 @@ public class Controlador implements MouseListener{
 			}
 		}
 		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].movT='p'; //indica que é a posição do próprio peão
-		obsTab.update(Window.t, null);
+		obsTab.update(_facade.getTabuleiro(), null);
 
 	}
 
@@ -127,7 +130,7 @@ public class Controlador implements MouseListener{
 			}
 		}
 
-		obsTab.update(Window.t, null);
+		obsTab.update(_facade.getTabuleiro(), null);
 	}
 
 	@Override

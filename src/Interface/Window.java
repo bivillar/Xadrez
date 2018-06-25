@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import Tabuleiro.*;
+import Principal.Facade;
 
 public class Window extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 1L;
@@ -20,16 +20,15 @@ public class Window extends JFrame implements ActionListener{
 	public final int ALT_DEFAULT=580;
 	public static DesenhoTabuleiro tab;
 	private static JPanel panel;
-	private static Tabuleiro t;
+	Facade _facade;
 	private JButton novo,carregar;
 	private JLabel l;
 	private Image img;
-	private Casa[][] tabuleiro;
 	public JPopupMenu popupmenu;
 	final JFrame f= new JFrame("PopupMenu");  
 
-	public Window() {
-		t.addObserver(Principal.Controlador.obsTab);
+	public Window(Facade facade) {
+		_facade = facade;
 		panel = new JPanel();
 		try {
 			img = ImageIO.read(new File("Imagens/chess.png"));
@@ -86,8 +85,8 @@ public class Window extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if("novo".equals(e.getActionCommand())) {
 			panel.setVisible(false);
-			t = Tabuleiro.getTabuleiro();
-			tab = new DesenhoTabuleiro(Tabuleiro.getCasas());
+			_facade.criaTabuleiro();
+			tab = new DesenhoTabuleiro(_facade);
 			getContentPane().add(tab);
 			
 
@@ -105,8 +104,8 @@ public class Window extends JFrame implements ActionListener{
 					BufferedReader fr = new BufferedReader(r);
 
 					panel.setVisible(false);
-					t = Tabuleiro.getTabuleiro(fr);
-					tab = new DesenhoTabuleiro(Tabuleiro.getCasas());
+					_facade.criaTabuleiro(fr);
+					tab = new DesenhoTabuleiro(_facade);
 					getContentPane().add(tab);
 
 					fr.close();

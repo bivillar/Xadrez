@@ -7,9 +7,10 @@ public class Main {
 	static Window janelaJogo;
 	
 	public static void main(String[] args) {
-		janelaJogo = new Window();
+		Facade facade = new Facade();
+		janelaJogo = new Window(facade);
 		janelaJogo.setVisible(true);
-		janelaJogo.addMouseListener(new Controlador());
+		janelaJogo.addMouseListener(new Controlador(facade));
 	}
 
 }
