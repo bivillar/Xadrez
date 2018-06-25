@@ -4,10 +4,11 @@ package Tabuleiro;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.Observable;
 
 import Pecas.*;
 
-public class Tabuleiro {
+public class Tabuleiro extends Observable {
 	private static Casa _casa[][] = new Casa[8][8];
 	private static movimento _jogadas[][] = new movimento[64][64];
 	public static boolean vezBranco = false;
