@@ -20,6 +20,7 @@ public class Window extends JFrame implements ActionListener{
 	public final int ALT_DEFAULT=580;
 	public static DesenhoTabuleiro tab;
 	private static JPanel panel;
+	private static Tabuleiro t = Tabuleiro.getTabuleiro();
 	private JButton novo,carregar;
 	private JLabel l;
 	private Image img;

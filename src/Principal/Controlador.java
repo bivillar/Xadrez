@@ -191,7 +191,7 @@ public class Controlador implements MouseListener{
 		//			} 
 		//		}
 
-		_tabuleiro = Tabuleiro.getTabuleiro();
+		_tabuleiro = Tabuleiro.getCasas();
 		_jogadas = Tabuleiro.getJogadas();
 
 

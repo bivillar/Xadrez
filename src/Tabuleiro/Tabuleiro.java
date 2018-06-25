@@ -7,6 +7,7 @@ import java.util.Observable;
 import Pecas.*;
 
 public class Tabuleiro extends Observable {
+	private static Tabuleiro t = null;
 	private static Casa _casa[][] = new Casa[8][8];
 	private static movimento _jogadas[][] = new movimento[64][64];
 	private static boolean _vezBranco;
@@ -16,61 +17,6 @@ public class Tabuleiro extends Observable {
 	private static Posicao _pXequeAtaque = new Posicao();
 
 	private Tabuleiro() {
-		
-	}
-	
-	public static Casa[][] getTabuleiro (){
-		if(_casa[0][0] == null) {
-			inicia();
-			_vezBranco = true;
-		}
-		return _casa;
-	}
-	
-	public static Casa[][] getTabuleiro (BufferedReader arqLeitura) throws IOException{
-		if(_casa[0][0] == null) {
-			inicia(arqLeitura);
-		}
-		return _casa;
-	}
-	
-	public static void destroiTabuleiro() {
-		_casa = new Casa[8][8];
-		_jogadas = new movimento[64][64];
-		_vezBranco = true;
-	}
-	
-	public static movimento[][] getJogadas (){
-		if(_jogadas[0][0] == null) {
-			updateJogadas();
-		}
-		return _jogadas;
-	}
-
-	public static void mudarVez() {
-		_vezBranco = !_vezBranco;
-	}
-	
-	public static char getVez() {
-		if(_vezBranco == true)
-			return  'b';
-		else
-			return 'p';
-	}
-	
-	public static Posicao getPosReiBranco() {
-		return _posReiBranco;
-	}
-	
-	public static Posicao getPosReiPreto() {
-		return _posReiPreto;
-	}
-	
-	public static boolean estaEmXeque() {
-		return _xeque;
-	}
-	
-	public static void inicia() {
 		_vezBranco = true;
 		for (int y=0;y<8;y++) {
 			for(int x=0;x<8;x++) {
@@ -125,8 +71,8 @@ public class Tabuleiro extends Observable {
 
 		updateJogadas();
 	}
-
-	public static void inicia(BufferedReader arqLeitura) throws IOException{
+	
+	private Tabuleiro(BufferedReader arqLeitura) throws IOException {
 		String line = null;
 		BufferedReader bufferedReader = new BufferedReader(arqLeitura);
 		char time;
@@ -208,6 +154,55 @@ public class Tabuleiro extends Observable {
 			}
 		}
 	}
+	
+	public static Tabuleiro getTabuleiro (){
+		if(t== null) {
+			t = new Tabuleiro();
+		}
+		return t;
+	}
+	
+	public static Tabuleiro getTabuleiro (BufferedReader arqLeitura) throws IOException{
+		if(t == null) {
+			t = new Tabuleiro(arqLeitura);
+		}
+		return t;
+	}
+	
+	public static Casa[][] getCasas(){
+		return _casa;
+	}
+	
+	public static void destroiTabuleiro() {
+		t = null;
+	}
+	
+	public static movimento[][] getJogadas (){
+		return _jogadas;
+	}
+
+	public static void mudarVez() {
+		_vezBranco = !_vezBranco;
+	}
+	
+	public static char getVez() {
+		if(_vezBranco == true)
+			return  'b';
+		else
+			return 'p';
+	}
+	
+	public static Posicao getPosReiBranco() {
+		return _posReiBranco;
+	}
+	
+	public static Posicao getPosReiPreto() {
+		return _posReiPreto;
+	}
+	
+	public static boolean estaEmXeque() {
+		return _xeque;
+	}
 
 	public static void move_peca(Posicao pos, Posicao dest, Casa[][] tab) {
 		if(_xeque)
@@ -219,7 +214,6 @@ public class Tabuleiro extends Observable {
 		tab[dest.x][dest.y].peca.qtd_mov++;
 		updateJogadas();
 	}
-
 
 	public static void updateJogadas () {	
 		for(int k = 0;k<64;k++)
