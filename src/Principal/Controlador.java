@@ -21,7 +21,8 @@ public class Controlador implements MouseListener{
 	private Posicao _dest  = new Posicao (0,0);
 	private boolean xequeMate = false;
 	private JPopupMenu popupmenu;
-	private JPopupMenu popupmenuPromo; 
+	private JPopupMenu popupmenuPromo;
+	public static ObserverTab obsTab = new ObserverTab();
 
 	public static Casa get_casa (Posicao pos, Casa[][] tab) { //recebe uma posicao da tela e retorna a casa que estao dentro dela, se houver
 		//int x,y;
@@ -115,8 +116,7 @@ public class Controlador implements MouseListener{
 			}
 		}
 		_tabuleiro[origem.peca.pos.x][origem.peca.pos.y].movT='p'; //indica que é a posição do próprio peão
-		//obsTab.notify();
-		Window.tab.repaint();
+		obsTab.update(Window.t, null);
 
 	}
 
@@ -127,8 +127,7 @@ public class Controlador implements MouseListener{
 			}
 		}
 
-		//obsTab.notify();
-		Window.tab.repaint();
+		obsTab.update(Window.t, null);
 	}
 
 	@Override
