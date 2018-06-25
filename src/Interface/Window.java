@@ -20,7 +20,7 @@ public class Window extends JFrame implements ActionListener{
 	public final int ALT_DEFAULT=580;
 	public static DesenhoTabuleiro tab;
 	private static JPanel panel;
-	private static Tabuleiro t = Tabuleiro.getTabuleiro();
+	private static Tabuleiro t;
 	private JButton novo,carregar;
 	private JLabel l;
 	private Image img;
@@ -86,8 +86,8 @@ public class Window extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if("novo".equals(e.getActionCommand())) {
 			panel.setVisible(false);
-			tabuleiro=Tabuleiro.getTabuleiro();
-			tab = new DesenhoTabuleiro(tabuleiro);
+			t = Tabuleiro.getTabuleiro();
+			tab = new DesenhoTabuleiro(Tabuleiro.getCasas());
 			getContentPane().add(tab);
 			
 
@@ -105,8 +105,8 @@ public class Window extends JFrame implements ActionListener{
 					BufferedReader fr = new BufferedReader(r);
 
 					panel.setVisible(false);
-					tabuleiro = Tabuleiro.getTabuleiro(fr);
-					tab= new DesenhoTabuleiro(tabuleiro);
+					t = Tabuleiro.getTabuleiro(fr);
+					tab = new DesenhoTabuleiro(Tabuleiro.getCasas());
 					getContentPane().add(tab);
 
 					fr.close();
