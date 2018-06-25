@@ -29,6 +29,7 @@ public class Window extends JFrame implements ActionListener{
 	final JFrame f= new JFrame("PopupMenu");  
 
 	public Window() {
+		t.addObserver(Principal.Controlador.obsTab);
 		panel = new JPanel();
 		try {
 			img = ImageIO.read(new File("Imagens/chess.png"));
