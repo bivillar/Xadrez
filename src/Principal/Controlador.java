@@ -159,7 +159,8 @@ public class Controlador implements MouseListener{
 
 		popupmenu.add(item = new JMenuItem("Novo Jogo"));
 		item.addActionListener(new ActionListener(){  
-			public void actionPerformed(ActionEvent e) {              
+			public void actionPerformed(ActionEvent e) { 
+				Tabuleiro.destroiTabuleiro();
 				Main.janelaJogo.novo();
 			}  
 		});  
@@ -190,8 +191,9 @@ public class Controlador implements MouseListener{
 		//			} 
 		//		}
 
-		_tabuleiro = Tabuleiro.get_Tabuleiro();
-		_jogadas = Tabuleiro.get_Jogadas();
+		_tabuleiro = Tabuleiro.getTabuleiro();
+		_jogadas = Tabuleiro.getJogadas();
+
 
 		if(_origem == null) { // nao selecionaram quem vai atacar ate agora
 			_pos.set_Pos(c.getX(), c.getY());
@@ -199,7 +201,7 @@ public class Controlador implements MouseListener{
 
 			if(_origem != null && _origem.vazia()) { //nao tem peca
 				_origem = null;
-			}else if(_origem != null && ((Tabuleiro.vezBranco && _origem.peca.time=='p') || (!Tabuleiro.vezBranco && _origem.peca.time=='b'))) {
+			}else if(_origem != null && Tabuleiro.getVez() != _origem.peca.time) {
 				_origem = null;
 			}
 			else {
@@ -217,7 +219,7 @@ public class Controlador implements MouseListener{
 
 			}else if(!_destino.vazia() && _destino.peca.time == _origem.peca.time) {
 				if(_destino.peca.tipo == tPecas.torre && _origem.peca.tipo == tPecas.rei) {
-					if(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y] == movimento.valido && !Tabuleiro.vXeque) {
+					if(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y] == movimento.valido && !Tabuleiro.estaEmXeque()) {
 						//ROQUE
 
 						Posicao nRei = new Posicao();
@@ -235,7 +237,7 @@ public class Controlador implements MouseListener{
 						Tabuleiro.move_peca(_dest,nTorre,_tabuleiro);  //bota a torre na casa do lado do rei
 
 
-						Tabuleiro.vezBranco = !Tabuleiro.vezBranco;
+						Tabuleiro.mudarVez();
 
 					}
 
@@ -250,15 +252,13 @@ public class Controlador implements MouseListener{
 				}
 			} else {
 				if(_jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y]== movimento.valido ||  _jogadas[_pos.x+8*_pos.y][_dest.x+8*_dest.y]== movimento.ataque) {
-					if(Tabuleiro.vXeque)
-						Tabuleiro.vXeque = false;
 					Tabuleiro.move_peca(_pos,_dest,_tabuleiro);
 
 					if(!(_destino.peca.tipo != tPecas.peao || (_destino.peca.time == 'b' && _destino.peca.pos.y!=0) || (_destino.peca.time == 'p' && _destino.peca.pos.y!=7))) {
 						promoPeaoJpop(_destino); //PROMOCAO PEAO
 						popupmenuPromo.show(Main.janelaJogo, c.getX(), c.getY()); 
 					}
-					Tabuleiro.vezBranco = !Tabuleiro.vezBranco;	
+					Tabuleiro.mudarVez();	
 					verifica_xeque();
 				}
 				repaintTabuleiro();
@@ -266,31 +266,26 @@ public class Controlador implements MouseListener{
 			}
 			_destino = null;
 		}
-		if(xequeMate || Tabuleiro.vXeque) {
+		if(xequeMate || Tabuleiro.estaEmXeque()) {
 			xequeMate = false;
 		}else {
-			if(Tabuleiro.vezBranco && congelamento('b')) {
+			if(congelamento(Tabuleiro.getVez())) {
 				JOptionPane.showMessageDialog(Main.janelaJogo,
-						"CONGELAMENTO!!\nNÃO HÁ MAIS JOGADAS VÁLIDAS PARA O TIME BRANCO",
+						"CONGELAMENTO!!\nNÃO HÁ MAIS JOGADAS VÁLIDAS PARA O TIME DA VEZ",
 						"Aviso",
 						JOptionPane.WARNING_MESSAGE);
-				Main.janelaJogo.novo();
-			}else if(!Tabuleiro.vezBranco && congelamento('p')) {
-				JOptionPane.showMessageDialog(Main.janelaJogo,
-						"EMPATE!!\nNÃO HÁ MAIS JOGADAS VÁLIDAS PARA O TIME PRETO",
-						"Aviso",
-						JOptionPane.WARNING_MESSAGE);
+				Tabuleiro.destroiTabuleiro();
 				Main.janelaJogo.novo();
 			}
 		}
 	}
 
 	private void verifica_xeque() {
-		Posicao reis[]= {Tabuleiro.posReiBranco,Tabuleiro.posReiPreto}; 
+		Posicao reis[]= {Tabuleiro.getPosReiBranco(),Tabuleiro.getPosReiPreto()}; 
 		String time[]= {"PRETO", "BRANCO"};
 		boolean vez[]= {false, false};
 
-		if(Tabuleiro.vezBranco) {
+		if(Tabuleiro.getVez() == 'b') {
 			vez[0] = true;
 		}else {
 			vez[1] = true;
@@ -302,15 +297,7 @@ public class Controlador implements MouseListener{
 					for(int x=0;x<8;x++) {
 						if(_jogadas[x+8*y][reis[i].x+reis[i].y*8] == movimento.ataque || _jogadas[x+8*y][reis[i].x+reis[i].y*8] == movimento.ataque_valido) {
 							//XEQUE OU XEQUE MATE
-							if(!vez[i]) { // se nao é a vez do que ta com o rei em ataque, é xeque mate direto
-								xequeMate = true;
-								JOptionPane.showMessageDialog(Main.janelaJogo,
-										"XEQUE-MATE!!\nVITORIA DO TIME " + time[i],
-										"Aviso",
-										JOptionPane.WARNING_MESSAGE);
-								Main.janelaJogo.novo();
-							}else if(Tabuleiro.xeque(new Posicao(x,y),reis[i])) {
-								Tabuleiro.vXeque = true;
+							if(vez[i] && Tabuleiro.xeque(new Posicao(x,y),reis[i])) {
 								JOptionPane.showMessageDialog(Main.janelaJogo,
 										"XEQUE PELO TIME " + time[i],
 										"Aviso",
@@ -321,6 +308,7 @@ public class Controlador implements MouseListener{
 										"XEQUE-MATE!!\nVITORIA DO TIME " + time[i],
 										"Aviso",
 										JOptionPane.WARNING_MESSAGE);
+								Tabuleiro.destroiTabuleiro();
 								Main.janelaJogo.novo();
 							}
 						}

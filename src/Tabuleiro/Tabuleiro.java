@@ -1,6 +1,4 @@
 package Tabuleiro;
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -11,30 +9,69 @@ import Pecas.*;
 public class Tabuleiro extends Observable {
 	private static Casa _casa[][] = new Casa[8][8];
 	private static movimento _jogadas[][] = new movimento[64][64];
-	public static boolean vezBranco = false;
-	public static Posicao posReiBranco;
-	public static Posicao posReiPreto;
-	public static boolean vXeque = false;
-	private static Posicao pXequeAtaque = new Posicao();
+	private static boolean _vezBranco;
+	private static Posicao _posReiBranco;
+	private static Posicao _posReiPreto;
+	private static boolean _xeque = false;
+	private static Posicao _pXequeAtaque = new Posicao();
 
-	public Tabuleiro () {
-		inicia();
+	private Tabuleiro() {
+		
 	}
-
-	public Tabuleiro (BufferedReader arqLeitura) throws IOException {
-		inicia(arqLeitura);
-	}
-
-	public static Casa[][] get_Tabuleiro (){
+	
+	public static Casa[][] getTabuleiro (){
+		if(_casa[0][0] == null) {
+			inicia();
+			_vezBranco = true;
+		}
 		return _casa;
 	}
-
-	public static movimento[][] get_Jogadas (){
+	
+	public static Casa[][] getTabuleiro (BufferedReader arqLeitura) throws IOException{
+		if(_casa[0][0] == null) {
+			inicia(arqLeitura);
+		}
+		return _casa;
+	}
+	
+	public static void destroiTabuleiro() {
+		_casa = new Casa[8][8];
+		_jogadas = new movimento[64][64];
+		_vezBranco = true;
+	}
+	
+	public static movimento[][] getJogadas (){
+		if(_jogadas[0][0] == null) {
+			updateJogadas();
+		}
 		return _jogadas;
 	}
 
+	public static void mudarVez() {
+		_vezBranco = !_vezBranco;
+	}
+	
+	public static char getVez() {
+		if(_vezBranco == true)
+			return  'b';
+		else
+			return 'p';
+	}
+	
+	public static Posicao getPosReiBranco() {
+		return _posReiBranco;
+	}
+	
+	public static Posicao getPosReiPreto() {
+		return _posReiPreto;
+	}
+	
+	public static boolean estaEmXeque() {
+		return _xeque;
+	}
+	
 	public static void inicia() {
-		vezBranco = true;
+		_vezBranco = true;
 		for (int y=0;y<8;y++) {
 			for(int x=0;x<8;x++) {
 				if(y%2 == 0) {
@@ -53,7 +90,7 @@ public class Tabuleiro extends Observable {
 		_casa[2][0].peca = (Bispo) new Bispo('p',new Posicao(2,0));
 		_casa[3][0].peca = (Rainha) new Rainha('p',new Posicao(3,0));
 		_casa[4][0].peca = (Rei) new Rei('p',new Posicao(4,0));
-		posReiPreto = new Posicao(4,0);
+		_posReiPreto = new Posicao(4,0);
 		_casa[5][0].peca = (Bispo) new Bispo('p',new Posicao(5,0));
 		_casa[6][0].peca = (Cavalo) new Cavalo('p',new Posicao(6,0));
 		_casa[7][0].peca = (Torre) new Torre('p',new Posicao(7,0));
@@ -72,7 +109,7 @@ public class Tabuleiro extends Observable {
 		_casa[2][7].peca = (Bispo) new Bispo('b',new Posicao(2,7));
 		_casa[3][7].peca = (Rainha) new Rainha('b',new Posicao(3,7));
 		_casa[4][7].peca = (Rei) new Rei('b',new Posicao(4,7));
-		posReiBranco= new Posicao(4,7);
+		_posReiBranco= new Posicao(4,7);
 		_casa[5][7].peca = (Bispo) new Bispo('b',new Posicao(5,7));
 		_casa[6][7].peca = (Cavalo) new Cavalo('b',new Posicao(6,7));
 		_casa[7][7].peca = (Torre) new Torre('b',new Posicao(7,7));
@@ -86,7 +123,7 @@ public class Tabuleiro extends Observable {
 		_casa[6][6].peca = (Peao) new Peao('b',new Posicao(6,6));
 		_casa[7][6].peca = (Peao) new Peao('b',new Posicao(7,6));	
 
-		update_Jogadas();
+		updateJogadas();
 	}
 
 	public static void inicia(BufferedReader arqLeitura) throws IOException{
@@ -109,18 +146,18 @@ public class Tabuleiro extends Observable {
 
 		if((line = bufferedReader.readLine())!=null) {
 			if(line.contains("false"))
-				vezBranco = false;
+				_vezBranco = false;
 			else
-				vezBranco = true;
+				_vezBranco = true;
 		}
 
 		if((line = bufferedReader.readLine())!=null) {
 			if(line.contains("false"))
-				vXeque = false;
+				_xeque = false;
 			else {
-				vXeque = true;
-				pXequeAtaque.x = Integer.parseInt(String.valueOf(line.charAt(5)));
-				pXequeAtaque.y = Integer.parseInt(String.valueOf(line.charAt(7)));
+				_xeque = true;
+				_pXequeAtaque.x = Integer.parseInt(String.valueOf(line.charAt(5)));
+				_pXequeAtaque.y = Integer.parseInt(String.valueOf(line.charAt(7)));
 			}
 		}
 		
@@ -147,9 +184,9 @@ public class Tabuleiro extends Observable {
 				case 'k':
 					_casa[x][y].peca = (Rei) new Rei(time,new Posicao(x,y));
 					if(time == 'b')
-						posReiBranco= new Posicao(x,y);
+						_posReiBranco= new Posicao(x,y);
 					else
-						posReiPreto= new Posicao(x,y);
+						_posReiPreto= new Posicao(x,y);
 					break;
 				case 'p':
 					_casa[x][y].peca = (Peao) new Peao(time,new Posicao(x,y));
@@ -162,27 +199,29 @@ public class Tabuleiro extends Observable {
 				x++;
 			}
 		}
-		update_Jogadas();
-		if(vXeque) {
-			if(_casa[pXequeAtaque.x][pXequeAtaque.y].peca.time == 'b') {
-				xeque(pXequeAtaque, posReiPreto);
+		updateJogadas();
+		if(_xeque) {
+			if(_casa[_pXequeAtaque.x][_pXequeAtaque.y].peca.time == 'b') {
+				xeque(_pXequeAtaque, _posReiPreto);
 			}else {
-				xeque(pXequeAtaque, posReiBranco);
+				xeque(_pXequeAtaque, _posReiBranco);
 			}
 		}
 	}
 
 	public static void move_peca(Posicao pos, Posicao dest, Casa[][] tab) {
+		if(_xeque)
+			_xeque=false;
 		tab[dest.x][dest.y].peca = tab[pos.x][pos.y].peca;
 		tab[pos.x][pos.y].peca = null;
 		tab[dest.x][dest.y].peca.pos.x = dest.x;
 		tab[dest.x][dest.y].peca.pos.y = dest.y;
 		tab[dest.x][dest.y].peca.qtd_mov++;
-		update_Jogadas();
+		updateJogadas();
 	}
 
 
-	public static void update_Jogadas () {	
+	public static void updateJogadas () {	
 		for(int k = 0;k<64;k++)
 			for(int t=0;t<64;t++)
 				_jogadas[t][k]=movimento.invalido;
@@ -194,23 +233,23 @@ public class Tabuleiro extends Observable {
 						_jogadas[x+8*y] = _casa[x][y].peca.mov_valido(_casa);
 					else { //guardo as posicoes dos reis pra nao ter que verificar todo o tabuleiro de novo
 						if(_casa[x][y].peca.time == 'b')
-							posReiBranco.set_Pos(x, y);
+							_posReiBranco.set_Pos(x, y);
 						else
-							posReiPreto.set_Pos(x, y);
+							_posReiPreto.set_Pos(x, y);
 					}
 				}
 			}
 		}
 
-		_jogadas[posReiBranco.x+8*posReiBranco.y] = _casa[posReiBranco.x][posReiBranco.y].peca.mov_valido(_casa);
-		_jogadas[posReiPreto.x+8*posReiPreto.y] = _casa[posReiPreto.x][posReiPreto.y].peca.mov_valido(_casa);
+		_jogadas[_posReiBranco.x+8*_posReiBranco.y] = _casa[_posReiBranco.x][_posReiBranco.y].peca.mov_valido(_casa);
+		_jogadas[_posReiPreto.x+8*_posReiPreto.y] = _casa[_posReiPreto.x][_posReiPreto.y].peca.mov_valido(_casa);
 	}
 
 	public static boolean xeque(Posicao ataque, Posicao rei) {
 		boolean temSaida = false;
 		int rx, ry;
 		char timeRei = _casa[rei.x][rei.y].peca.time;
-		pXequeAtaque = ataque;
+		_pXequeAtaque = ataque;
 		
 		//procurar bloqueio
 		if(_casa[ataque.x][ataque.y].peca.tipo != tPecas.cavalo) { //só tem bloqueio se nao é cavalo
@@ -288,7 +327,9 @@ public class Tabuleiro extends Observable {
 					_jogadas[k][t] = movimento.valido;
 			}	
 		}
-
+		if(temSaida) {
+			_xeque = true;
+		}
 		return temSaida;
 	}
 
@@ -307,7 +348,7 @@ public class Tabuleiro extends Observable {
 			_casa[pos.x][pos.y].peca = (Cavalo) new Cavalo(_casa[pos.x][pos.y].peca.time,pos);
 			break;
 		}
-		update_Jogadas();
+		updateJogadas();
 	}
 
 
@@ -316,12 +357,12 @@ public class Tabuleiro extends Observable {
 		String aux2="",aux3="";
 
 		try {
-			fileWriter.write(String.valueOf(vezBranco));
+			fileWriter.write(String.valueOf(_vezBranco));
 			fileWriter.newLine();
-			fileWriter.write(String.valueOf(vXeque));
+			fileWriter.write(String.valueOf(_xeque));
 			
-			if(vXeque)
-				fileWriter.write(" "+pXequeAtaque.x+" "+pXequeAtaque.y);
+			if(_xeque)
+				fileWriter.write(" "+_pXequeAtaque.x+" "+_pXequeAtaque.y);
 			
 			fileWriter.newLine();
 

@@ -24,7 +24,6 @@ public class Window extends JFrame implements ActionListener{
 	private JLabel l;
 	private Image img;
 	private Casa[][] tabuleiro;
-	Tabuleiro t = new Tabuleiro();
 	public JPopupMenu popupmenu;
 	final JFrame f= new JFrame("PopupMenu");  
 
@@ -86,9 +85,8 @@ public class Window extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if("novo".equals(e.getActionCommand())) {
 			panel.setVisible(false);
-			Tabuleiro.inicia();
-			tabuleiro=Tabuleiro.get_Tabuleiro();
-			tab= new DesenhoTabuleiro(tabuleiro);
+			tabuleiro=Tabuleiro.getTabuleiro();
+			tab = new DesenhoTabuleiro(tabuleiro);
 			getContentPane().add(tab);
 			
 
@@ -106,8 +104,7 @@ public class Window extends JFrame implements ActionListener{
 					BufferedReader fr = new BufferedReader(r);
 
 					panel.setVisible(false);
-					Tabuleiro.inicia(fr);
-					tabuleiro = Tabuleiro.get_Tabuleiro();
+					tabuleiro = Tabuleiro.getTabuleiro(fr);
 					tab= new DesenhoTabuleiro(tabuleiro);
 					getContentPane().add(tab);
 
