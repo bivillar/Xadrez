@@ -10,7 +10,7 @@ public class Rei extends PECA{
 	@Override	
 	public movimento[] mov_valido(Casa casas[][])  { 
 		movimento movs[] = new movimento[64];
-		movimento jogadas[][] = Tabuleiro.get_Jogadas();
+		movimento jogadas[][] = Tabuleiro.getJogadas();
 		int a[] = {1,-1,0,0,1,1,-1,-1};
 		int b[] = {0,0,1,-1,1,-1,1,-1};
 		int x,y;
